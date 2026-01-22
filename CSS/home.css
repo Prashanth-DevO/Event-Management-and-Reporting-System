@@ -4,19 +4,29 @@ body{
     padding: 0;
     background-color: #ffffff;
     color: #222;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 nav{
     background-color: #333;
     color: #fff;
-    padding: 10px 0;
+    padding: 12px 0;
     text-align: center;
 }
 
-main{
-    padding: 4rem 1rem;
-    max-width: 1000px;
-    margin: 0 auto;
+nav h1{
+    margin: 0;
+}
+
+
+.baner{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .image-row{
@@ -30,7 +40,13 @@ main{
 .image-row .user-section,
 .image-row .admin-section{
     text-align: center;
+    padding: 1.5rem;
+    border-radius: 10px;
+    background: #f4f4f4;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    width: 220px;
 }
+
 
 .profile-img{
     width: 180px;
@@ -41,8 +57,73 @@ main{
     border-radius: 8px;
 }
 
+
+button{
+    padding: 10px 18px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover{
+    background-color: #0493e0;
+}
+
+.container{
+    width: 360px;
+    max-width: 90%;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.form-title{
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.input-group{
+    margin-bottom: 1.2rem;
+}
+
+.input-group input{
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.input-group input:focus{
+    outline: none;
+    border-color: #007bff;
+}
+
+.links{
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.links button{
+    margin-top: 0.5rem;
+    background: transparent;
+    color: #007bff;
+    border: none;
+    font-size: 14px;
+}
+
+.links button:hover{
+    text-decoration: underline;
+}
+
 footer{
     text-align: center;
     padding: 1rem 0;
     color: #666;
+    margin-top: auto;
 }

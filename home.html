@@ -7,29 +7,84 @@
     <link rel="stylesheet" href="CSS/home.css">
 </head>
 <body>
-    <nav>
-        <h1>EventFlow</h1>
-    </nav>
-    <main>
-        <div class="image-row">
-            <div class="user-section">
-                <a href="pages/user.html">
-                    <img class="profile-img" src="assets/images/user.jpg" alt="User">
-                    <h4>User</h4>
-                </a>
-            </div>
 
-            <div class="admin-section">
-                <a href="pages/admin.html">
-                    <img class="profile-img" src="assets/images/admin.jpg" alt="Admin">
-                    <h4>Admin</h4>
-                </a>
-            </div>
+<nav>
+    <h1>EventFlow</h1>
+</nav>
+
+
+<div class="baner" id="banner">
+    <div class="image-row">
+        <div class="user-section">
+            <img class="profile-img" src="assets/images/user.jpg" alt="User">
+            <h4>Participant</h4>
+            <button type="button" id="userLoginBtn">Sign In</button>
+            <button type="button" id="userRegisterBtn">Sign Up</button>
         </div>
-    </main>
 
-    <footer>
-        <p>&copy; 2026 EventFlow. All rights reserved.</p>
-    </footer>
+        <div class="admin-section">
+            <img class="profile-img" src="assets/images/admin.jpg" alt="Admin">
+            <h4>Admin</h4>
+            <button type="button" id="adminLoginBtn">Sign In</button>
+            <button type="button" id="adminRegisterBtn">Sign Up</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" id="signup" style="display:none;">
+    <h1 class="form-title">Register</h1>
+    <form id="registerForm">
+        <input type="hidden" id="registerRole">
+
+        <div class="input-group">
+            <input type="text" placeholder="First Name" required>
+        </div>
+        <div class="input-group">
+            <input type="text" placeholder="Last Name" required>
+        </div>
+        <div class="input-group">
+            <input type="email" placeholder="Email" required>
+        </div>
+        <div class="input-group">
+            <input type="password" placeholder="Password" required>
+        </div>
+
+        <button type="submit" class="btn">Sign Up</button>
+    </form>
+
+    <div class="links">
+        <p>Already have an account?</p>
+        <button type="button" id="goToSignIn">Sign In</button>
+    </div>
+</div>
+
+
+<div class="container" id="signIn" style="display:none;">
+    <h1 class="form-title">Sign In</h1>
+    <form id="loginForm">
+        <input type="hidden" id="loginRole">
+
+        <div class="input-group">
+            <input type="email" placeholder="Email" required>
+        </div>
+        <div class="input-group">
+            <input type="password" placeholder="Password" required>
+        </div>
+
+        <button type="submit" class="btn">Sign In</button>
+    </form>
+
+    <div class="links">
+        <p>Don't have an account?</p>
+        <button type="button" id="goToSignUp">Sign Up</button>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 EventFlow. All rights reserved.</p>
+</footer>
+
+<script src="JS/home.js"></script>
 </body>
 </html>
