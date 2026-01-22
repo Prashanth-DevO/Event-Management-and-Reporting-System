@@ -30,19 +30,8 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Tech Talk</td>
-                    <td>Coding Club</td>
-                    <td>10/02/2026 10:00</td>
-                    <td>10/02/2026 12:00</td>
-                    <td>Alice, Bob</td>
-                    <td class="actions">
-                        <button class="btn btn-primary">Download Report</button>
-                        <button class="btn btn-secondary">Participants</button>
-                    </td>
-                </tr>
+            <tbody id="tableBody">
+
             </tbody>
         </table>
     </section>
@@ -50,13 +39,13 @@
     <section class="form-section">
         <h2>Create New Event</h2>
 
-        <form class="event-form">
-            <input type="text" placeholder="Event Name" required>
-            <input type="text" placeholder="Club Name" required>
-            <input type="datetime-local" required>
-            <input type="datetime-local" required>
-            <input type="text" placeholder="Coordinators (name,email; ...)" required>
-            <button type="submit" class="btn btn-primary">Create Event</button>
+        <form class="event-form" id="event-form">
+            <input type="text" id="event-name" placeholder="Event Name" required>
+            <input type="text" id="club-name" placeholder="Club Name" required>
+            <input type="datetime-local" id="start-time" required>
+            <input type="datetime-local" id="end-time" required>
+            <input type="text" id="coordinators" placeholder="Coordinators (name,email; ...)" required>
+            <button type="submit" class="btn btn-primary" id="addEvent">Create Event</button>
         </form>
     </section>
 
@@ -65,6 +54,6 @@
 <footer class="footer">
     © 2026 EventFlow. All rights reserved.
 </footer>
-
+<script src="../JS/admin.js"></script>
 </body>
 </html>

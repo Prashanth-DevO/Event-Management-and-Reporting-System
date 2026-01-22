@@ -37,9 +37,9 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
     const role = loginRole.value;
 
     if (role === "participant") {
-        window.open("pages/user.html");
+        window.open("pages/user.html", "_self");
     } else if (role === "admin") {
-        window.open("pages/admin.html");
+        window.open("pages/admin.html", "_self");
     }
 });
 
@@ -50,8 +50,8 @@ document.getElementById("registerForm").addEventListener("submit", function (e) 
     const role = registerRole.value;
 
     if (role === "participant") {
-        window.open("pages/user.html");
+        window.open("pages/user.html", "_self");
     } else if (role === "admin") {
-        window.open("pages/admin.html");
+        window.open("pages/admin.html", "_self");
     }
 });
