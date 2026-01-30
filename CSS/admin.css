@@ -63,6 +63,11 @@ main{
     background-color: rgba(0, 123, 255, 0.15);
 }
 
+.stats{
+    display: flex;
+    justify-content: space-between;;
+}
+
 .actions {
     display: flex;
     gap: 8px;

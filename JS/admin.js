@@ -31,7 +31,7 @@ form.addEventListener("submit", function (e) {
         <td>${end}</td>
         <td>${coordinators}</td>
         <td class="actions">
-            <button class="btn btn-secondary">Download Report</button>
+            <button class="btnbtn-secondary" type="button">Download Report</button>
             <button class="btn btn-danger">Participants List</button>
         </td>
     `;
@@ -39,3 +39,12 @@ form.addEventListener("submit", function (e) {
     tableBody.appendChild(row);
     form.reset();
 });
+tableBody.addEventListener("click",function(e) {
+    if(e.target.classList.contains("btn-danger")){
+        alert("Download of Participants List is  going to download");
+    }
+})
+
+document.getElementById("download_pg").onclick = () => {
+    window.open("../pages/download.html","_self");
+}
