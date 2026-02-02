@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Event-Booking and Automatic report generator",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Prashanth-DevO/Event-Management-and-Reporting-System.git"
+  },
+  "author": "PRASHANTH SAKAPURAM",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Prashanth-DevO/Event-Management-and-Reporting-System/issues"
+  },
+  "homepage": "https://github.com/Prashanth-DevO/Event-Management-and-Reporting-System#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongoose": "^9.1.5",
+    "nodemon": "^3.1.11"
+  }
+}
