@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EventFlow</title>
-    <link rel="stylesheet" href="CSS/home.css">
+    <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
 
@@ -38,16 +38,16 @@
         <input type="hidden" id="registerRole">
 
         <div class="input-group">
-            <input type="text" placeholder="First Name" required>
+            <input type="text" placeholder="First Name" name="firstName" required>
         </div>
         <div class="input-group">
-            <input type="text" placeholder="Last Name" required>
+            <input type="text" placeholder="Last Name" name="lastName" required>
         </div>
         <div class="input-group">
-            <input type="email" placeholder="Email" required>
+            <input type="email" placeholder="Email" name="email" required>
         </div>
         <div class="input-group">
-            <input type="password" placeholder="Password" required>
+            <input type="password" placeholder="Password" name="password" required>
         </div>
 
         <button type="submit" class="btn">Sign Up</button>
@@ -66,10 +66,10 @@
         <input type="hidden" id="loginRole">
 
         <div class="input-group">
-            <input type="email" placeholder="Email" required>
+            <input type="email" name="email" placeholder="Email" required>
         </div>
         <div class="input-group">
-            <input type="password" placeholder="Password" required>
+            <input type="password" name="password" placeholder="Password" required>
         </div>
 
         <button type="submit" class="btn">Sign In</button>
@@ -85,6 +85,6 @@
     <p>&copy; 2026 EventFlow. All rights reserved.</p>
 </footer>
 
-<script src="JS/home.js"></script>
+<script src="js/home.js"></script>
 </body>
 </html>

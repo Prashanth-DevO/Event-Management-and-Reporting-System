@@ -5,6 +5,8 @@ const countSpan = document.querySelector(".stats span");
 let eventCount = tableBody.rows.length;
 countSpan.textContent = eventCount;
 
+alert("Welcome Admin! You can manage events here.");
+
 form.addEventListener("submit", function (e) {
     e.preventDefault();
 

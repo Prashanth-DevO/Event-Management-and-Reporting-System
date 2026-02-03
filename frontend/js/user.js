@@ -1,0 +1,1 @@
+alert("Greate to see you here! Participate in exciting events organized by various clubs.");
