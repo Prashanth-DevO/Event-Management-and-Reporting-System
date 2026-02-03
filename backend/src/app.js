@@ -1,5 +1,6 @@
 import express from "express";
-import router from "./routes/login.route.js";
+import loginRouter from "./routes/login.route.js";
+import eventRouter from "./routes/event.route.js";
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use("/api/auth",router);
+app.use("/api/auth",loginRouter);
+app.use("/api/events", eventRouter);
 
 export default app;
