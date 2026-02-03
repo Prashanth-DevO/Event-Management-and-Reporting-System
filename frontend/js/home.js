@@ -49,7 +49,6 @@ document.getElementById("loginForm").addEventListener("submit", async(e) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formDetails)
         });
-        const result = await response.json();
         if (response.ok) {
             if (role === "participant") {
                 window.open("pages/user.html", "_self");
@@ -58,7 +57,7 @@ document.getElementById("loginForm").addEventListener("submit", async(e) => {
             }
         }
         else {
-            alert("Login failed: " + result.message);
+            alert("Login failed: " );
         }
        
     }

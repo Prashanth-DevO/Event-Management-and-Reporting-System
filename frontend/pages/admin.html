@@ -14,10 +14,10 @@
 <main class="container">
 
     <section class="stats">
-        <h2>Events Created: <span>0</span></h2>
         <button id="download_pg" type="button" class="btn btn-primary">Download Reports</button>
     </section>
-
+    <input type="text" id="adminUser"  required>
+    <button id="fetch" type="button" onclick="fetchEvents()">Fetch Events</button>
     <section class="table-section">
         <table class="event-table">
             <thead>
@@ -43,9 +43,12 @@
         <form class="event-form" id="event-form">
             <input type="text" id="event-name" placeholder="Event Name" required>
             <input type="text" id="club-name" placeholder="Club Name" required>
-            <input type="datetime-local" id="start-time" required>
-            <input type="datetime-local" id="end-time" required>
-            <input type="text" id="coordinators" placeholder="Coordinators (name,email; ...)" required>
+            <input type="datetime-local" id="start-date" required>
+            <input type="datetime-local" id="end-date" required>
+            <input type="text" id="coordinator1" placeholder="First Coordinator Name" required>
+            <input type="text" id="coordinator2" placeholder="Second Coordinator Name" required>
+            <input type="text" id="coordinator1_number" placeholder="First Coordinator Contact Number" required>
+            <input type="text" id="coordinator2_number" placeholder="Second Coordinator Contact Number" required>
             <button type="submit" class="btn btn-primary" id="addEvent">Create Event</button>
         </form>
     </section>
