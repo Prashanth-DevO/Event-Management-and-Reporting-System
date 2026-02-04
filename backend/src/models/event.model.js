@@ -63,8 +63,12 @@ const eventSchema = new Schema({
     adminUser:{
         type: String,
         required: true,
-        unique: true,
         trim: true
+    },
+    venue:{
+        type:String,
+        required:true,
+        trim:true
     },
     participants:{
         type: [participantsSchema]

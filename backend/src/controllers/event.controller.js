@@ -2,8 +2,8 @@ import { Event } from "../models/event.model.js";
 
 const createEvent = async (req,res) => {
     try {
-        const { eventName, clubName, startDate, endDate, coordinator, adminUser } = req.body;
-
+        const { eventName, clubName, startDate, endDate, coordinator, adminUser , venue } = req.body;
+ 
         const existingEvent = await Event.findOne({ eventName, startDate });
         if(existingEvent){
             alert("Event already exists with this name and start date");
@@ -15,7 +15,8 @@ const createEvent = async (req,res) => {
             startDate,
             endDate,
             coordinator,
-            adminUser
+            adminUser,
+            venue
         })
         await newEvent.save();
         res.status(201).json({message: "Event created successfully"});
@@ -37,4 +38,15 @@ const eventsFetch= async (req, res) => {
         res.status(500).json({ message: "Server Error", error: error.message });
     }
 }
-export { createEvent , eventsFetch };
+
+const allEventsFetch = async(req,res) => {
+    try {
+         const AllEvents = await Event.find({});
+         res.status(200).json(AllEvents);
+    }
+    catch (error) {
+        res.status(500).json({message: "Server Failed to get all the events", error: error.message});
+    }
+}
+
+export { createEvent , eventsFetch , allEventsFetch };

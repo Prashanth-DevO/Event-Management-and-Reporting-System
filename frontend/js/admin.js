@@ -16,8 +16,9 @@ form.addEventListener("submit", async(e) => {
     const coord2 = document.getElementById("coordinator2").value.trim();
     const coord1_num = document.getElementById("coordinator1_number").value.trim();
     const coord2_num = document.getElementById("coordinator2_number").value.trim();
+    const venue = document.getElementById("venueName").value.trim();
 
-    if (!eventName || !club || !start || !end ) {
+    if (!eventName || !club || !start || !end || !venue ) {
         alert("Fill all fields");
         return;
     }
@@ -38,6 +39,7 @@ form.addEventListener("submit", async(e) => {
                 }
             ],
             adminUser,
+            venue,
             participants:[]
         }
         const response = await fetch("http://localhost:3000/api/events/create",{
@@ -88,6 +90,7 @@ function appendInToTables(events){
             <td>${startDate}</td>
             <td>${endDate}</td>
             <td>${coordinators}</td>
+            <tb>${event.venue}</td>
             <td class="Buttons">
                 <button id="downloadReport" onclick="DownloadReport(${event.id})">DownloadReport</button>
                 <button id="downloadParticipants" onclick="DownloadParticipants(${event.id})">Participants</button>
