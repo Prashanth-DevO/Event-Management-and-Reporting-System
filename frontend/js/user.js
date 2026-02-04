@@ -3,6 +3,18 @@ const clubsMenu = document.getElementById("clubs");
 const venueName = document.getElementById("venues");
 
 function menufunction(events){
+    events.forEach(event =>{
+         const option1 = document.createElement("option");
+         option1.innerHTML=`
+         ${event.clubName}
+         `;
+         clubsMenu.appendChild(option1);
+         const option2 = document.createElement("option");
+         option2.innerHTML=`
+         ${event.venue}
+         `;
+         venueName.appendChild(option2);
+    })
 
 }
 
@@ -13,7 +25,7 @@ async function forFetching(){
             console.error(`Error between - frontend to get the menu ${response.status}`);
         }
         else{
-            const events = response.json();
+            const events =await response.json();
             menufunction(events);
         }
     }
@@ -21,3 +33,5 @@ async function forFetching(){
         console.error("Error from the frontend ");
     }
 }
+
+forFetching();
