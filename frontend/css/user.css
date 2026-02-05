@@ -106,3 +106,50 @@ select, input {
     border: 1px solid #ccc;
     font-size: 15px;
 }
+
+#eventsMenu {
+    width: 90%;
+    max-width: 900px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.event-card {
+    background: #ffffff;
+    color: #111;                
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.event-card h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #000;              
+}
+
+.event-card p {
+    margin: 0;
+    color: #333;                
+}
+
+.register-btn {
+    margin-top: 10px;
+    width: fit-content;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background: #4f46e5;
+    color: white;
+    cursor: pointer;
+}
+
+.register-btn:hover {
+    background: #4338ca;
+}
