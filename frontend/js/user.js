@@ -2,6 +2,10 @@ alert("Greate to see you here! Participate in exciting events organized by vario
 const clubsMenu = document.getElementById("clubs");
 const venueName = document.getElementById("venues");
 const eventsMenu = document.getElementById("eventsMenu");
+const numberOfEvents=document.getElementById("numberOfEvents");
+const numberOfClubs = document.getElementById("numberOfClubs");
+const numberOfVenues = document.getElementById("numberOfVenues");
+const numberOfOpens = document.getElementById("numberOfOpens");
 
 function formatDate(dateString) {
     const date = new Date(dateString);
@@ -17,11 +21,11 @@ function menufunction(events){
     clubsMenu.innerHTML=` <option>All Clubs</option>`;
     venueName.innerHTML= `<option>All Venues</option>`;
     eventsMenu.innerHTML = "";
-
+    let count=0;
     let clubMenuSet = new Set();
     let venueSet = new Set();
     events.forEach(event =>{
-        
+         count++;
          clubMenuSet.add(event.clubName);
          venueSet.add(event.venue);
 
@@ -39,7 +43,8 @@ function menufunction(events){
          eventsMenu.appendChild(card);
 
     })
-
+    numberOfEvents.innerHTML = count;
+    numberOfClubs.innerHTML= clubMenuSet.size;
     clubMenuSet.forEach(club => {
          const option1 = document.createElement("option");
          option1.innerHTML=`
@@ -47,7 +52,7 @@ function menufunction(events){
          `;
          clubsMenu.appendChild(option1);
     })
-
+    numberOfVenues.innerHTML=venueSet.size;
     venueSet.forEach(venue_place => {
          const option2 = document.createElement("option");
          option2.innerHTML=`
@@ -55,7 +60,6 @@ function menufunction(events){
          `;
          venueName.appendChild(option2);
     })
-
 }
 
 async function forFetching(){

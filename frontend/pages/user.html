@@ -19,34 +19,29 @@
 </p>
 
 <div class="top-buttons">
-    <button>Browse Events</button>
+    <a href="#go">Browse Events</a>
 </div>
 
 <div class="stats-container">
     <div class="stat-box">
-        <div class="stat-number">0</div>
+        <div class="stat-number" ID="numberOfEvents">0</div>
         Events
     </div>
 
     <div class="stat-box">
-        <div class="stat-number">0</div>
+        <div class="stat-number" id="numberOfClubs">0</div>
         Clubs
     </div>
 
     <div class="stat-box">
-        <div class="stat-number">0</div>
+        <div class="stat-number" id="numberOfVenues">0</div>
         Venues
-    </div>
-
-    <div class="stat-box">
-        <div class="stat-number">0</div>
-        Open Now
     </div>
 </div>
 
 
 
-<div class="upcoming-section">
+<div class="upcoming-section" id="go">
     <h1 style="font-size:32px; margin-top:0;">Upcoming Events</h1>
     <p>Discover and register for exciting events across campus</p>
 
@@ -63,11 +58,6 @@
         <select id="venues">
             <option>All Venues</option>
         </select>
-
-
-        <input type="date" placeholder="dd-mm-yyyy">
-        <input type="date" placeholder="dd-mm-yyyy">
-
 
         <select>
             <option>Sort-By</option>
