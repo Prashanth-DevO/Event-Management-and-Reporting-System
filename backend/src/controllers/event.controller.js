@@ -49,4 +49,60 @@ const allEventsFetch = async(req,res) => {
     }
 }
 
-export { createEvent , eventsFetch , allEventsFetch };
+const searchClub = async(req , res) => {
+    try {
+         const clubName = req.query.clubName;
+         const events  =await Event.find({clubName:clubName});
+         res.status(200).json(events);
+    }
+    catch (error) {
+        res.status(500).json({message: "Server failed while fetch base on clubs", error: error.message});
+    }
+}
+
+const searchVenue = async(req,res) =>{
+    try {
+        const venue = req.query.venueName;
+        const events  =await Event.find({venue : venue});
+        res.status(200).json(events);
+    }
+    catch(error) {
+        res.status(500).json({message: "Server failed while fetch base on venues", error: error.message})
+    }
+}
+
+const sortOld = async(req, res) =>{
+    try {
+       const events = await Event.find().sort({startDate: 1});
+       res.status(200).json(events);
+
+    }
+    catch(error) {
+        res.status(500).json({message: "Server failed while fetch base on sortOld", error: error.message});
+    }
+
+}
+
+const sortNew = async(req , res) => {
+    try {
+        const events = await Event.find().sort({startDate: -1});
+        res.status(200).json(events);
+    }
+    catch(error) {
+         res.status(500).json({message: "Server failed while fetch base on sortNew", error: error.message});
+    }
+
+}
+
+const searchEvent = async(req,res)=>{
+    try{
+        const eventName = req.query.eventName;
+        const event =await Event.find({eventName:eventName});
+        res.status(200).json(event);
+    }
+    catch(error){
+        res.status(500).json({message: "Server failed while fetch base on search", error: error.message});
+    }
+}
+
+export { createEvent , eventsFetch , allEventsFetch  , searchClub , searchVenue , sortOld , sortNew , searchEvent};
