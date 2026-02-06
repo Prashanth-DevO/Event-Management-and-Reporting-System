@@ -6,6 +6,7 @@ const numberOfEvents=document.getElementById("numberOfEvents");
 const numberOfClubs = document.getElementById("numberOfClubs");
 const numberOfVenues = document.getElementById("numberOfVenues");
 const numberOfOpens = document.getElementById("numberOfOpens");
+const search = document.getElementById("Search");
 
 function formatDate(dateString) {
     const date = new Date(dateString);
@@ -79,3 +80,115 @@ async function forFetching(){
 }
 
 forFetching();
+
+function updateMenu(events){
+    eventsMenu.innerHTML = "";
+    events.forEach(event =>{
+         const card = document.createElement("div");
+         card.className="event-card";
+         card.innerHTML=`
+                <h3>${event.eventName}</h3>
+                <p><strong>Club:</strong> ${event.clubName}</p>
+                <p><strong>Venue:</strong> ${event.venue}</p>
+                <p><strong>Date:</strong> ${formatDate(event.startDate)}</p>
+                <button class="register-btn" onclick="register(${event._id})">Register</button>
+         `;
+
+         eventsMenu.appendChild(card);
+    })
+}
+
+async function searchClub(data){
+    if(data.value==="All Clubs"){
+        forFetching();
+        return;
+    }
+    try {
+         const response = await fetch(`http://localhost:3000/api/events/club?clubName=${data.value}`);
+         if(!response.ok){
+            console.error(`error from frontend for loadinf the events ${response.status}`);
+         }
+         else{
+            const events = await response.json();
+            updateMenu(events);
+         }
+    } 
+    catch(error){
+        console.error("Frontend fetch error:", error);
+    } 
+}
+
+async function searchVenue(data){
+    if(data.value==="All Venues"){
+        forFetching();
+        return;
+    }
+     try {
+         const response = await fetch(`http://localhost:3000/api/events/venue?venueName=${data.value}`);
+         if(!response.ok){
+            console.error(`error from frontend for loading the events ${response.status}`);
+         }
+         else{
+            const events = await response.json();
+            updateMenu(events);
+         }
+    } 
+    catch(error){
+        console.error("Frontend fetch error:", error);
+    }     
+}
+
+async function sorting(data){
+    if(data.value==="Oldest-first"){
+        try {
+            const response = await fetch(`http://localhost:3000/api/events/old`);
+            if(!response.ok){
+                console.error(`error from frontend for loading the oldfirst ${response.status}`);
+            }
+            else{
+                const events = await response.json();
+                updateMenu(events);
+            }
+
+        }
+        catch(error) {
+            console.error("Frontend fetch error:", error);
+        }
+    }
+    else{
+         try {
+            const response = await fetch(`http://localhost:3000/api/events/new`);
+            if(!response.ok){
+                 console.error(`error from frontend for loading the newfirst ${response.status}`);
+            }
+            else{
+                const events = await response.json();
+                updateMenu(events);
+            }
+         }
+         catch(error){
+            console.error("Frontend fetch error:", error);
+         }
+    }
+}
+
+async function searchFunction(){
+    if(search.value===""){
+        forFetching();
+        return;
+    }
+    try {
+        const response = await fetch(`http://localhost:3000/api/events/search?eventName=${search.value}`);
+        if(!response.ok){
+            console.error(`error from frontend for loading the search ${response.status}`);
+        }
+        else{
+            const events = await response.json();
+            updateMenu(events);
+        }
+    }
+    catch(error) {
+        console.error("Frontend fetch error:", error);
+    }
+}
+

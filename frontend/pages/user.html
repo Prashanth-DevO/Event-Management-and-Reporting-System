@@ -44,22 +44,24 @@
 <div class="upcoming-section" id="go">
     <h1 style="font-size:32px; margin-top:0;">Upcoming Events</h1>
     <p>Discover and register for exciting events across campus</p>
-
-    <input type="text" placeholder="Search events..." class="search-box">
+    <div class="search-row">
+        <input type="text" placeholder="Search events..." class="search-box" id="Search">
+        <button class="search-btn" onclick="searchFunction()">Search</button>
+    </div>
 
     <div class="filter-row">
         
        
-        <select id="clubs">
+        <select id="clubs" onchange="searchClub(this)">
             <option>All Clubs</option>
         </select>
 
        
-        <select id="venues">
+        <select id="venues" onchange="searchVenue(this)">
             <option>All Venues</option>
         </select>
 
-        <select>
+        <select onchange="sorting(this)">
             <option>Sort-By</option>
             <option>Newest-first</option>
             <option>Oldest-first</option>
@@ -67,8 +69,9 @@
     </div>
 </div>
 <div id="eventsMenu">
-    
+
 </div>
+
 <script src="../js/user.js"></script>
 </body>
 </html>
