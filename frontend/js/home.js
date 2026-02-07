@@ -50,6 +50,7 @@ document.getElementById("loginForm").addEventListener("submit", async(e) => {
             body: JSON.stringify(formDetails)
         });
         if (response.ok) {
+            localStorage.setItem("token",response.token);
             if (role === "participant") {
                 window.open("pages/user.html", "_self");
             } else if (role === "admin") {
@@ -90,6 +91,7 @@ document.getElementById("registerForm").addEventListener("submit", async(e) => {
         });
         const result = await response.json();
         if (response.ok) {
+            localStorage.setItem("token",response.token);
             if (role === "participant") {
                 window.open("pages/user.html", "_self");
             } else if (role === "admin") {

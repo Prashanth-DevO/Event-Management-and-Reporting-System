@@ -1,16 +1,13 @@
-import { createEvent , eventsFetch , allEventsFetch , searchClub ,searchVenue , sortOld , sortNew , searchEvent} from "../controllers/event.controller.js";
+import { createEventAdmin , eventsFetchAdmin , eventMenu} from "../controllers/event.controller.js";
 import { Router } from "express";
+import { checkUser } from "../middleware/authMiddleware.js";
 
 const eventRouter = Router();
 
-eventRouter.route("/create").post(createEvent);
-eventRouter.route("/fetch").get(eventsFetch);
-eventRouter.route("/menu").get(allEventsFetch);
-eventRouter.route("/club").get(searchClub);
-eventRouter.route("/venue").get(searchVenue);
-eventRouter.route("/old").get(sortOld);
-eventRouter.route("/new").get(sortNew);
-eventRouter.route("/search").get(searchEvent);
+eventRouter.route("/create").post(createEventAdmin);
+eventRouter.route("/fetch").get(eventsFetchAdmin);
+eventRouter.route("/menu").post(eventMenu);
+
 
 
 export default eventRouter;

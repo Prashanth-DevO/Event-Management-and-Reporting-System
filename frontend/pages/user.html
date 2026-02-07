@@ -46,22 +46,22 @@
     <p>Discover and register for exciting events across campus</p>
     <div class="search-row">
         <input type="text" placeholder="Search events..." class="search-box" id="Search">
-        <button class="search-btn" onclick="searchFunction()">Search</button>
+        <button class="search-btn" onclick="forFetching()">Search</button>
     </div>
 
     <div class="filter-row">
         
        
-        <select id="clubs" onchange="searchClub(this)">
+        <select id="clubs"  onchange="forFetching()">
             <option>All Clubs</option>
         </select>
 
        
-        <select id="venues" onchange="searchVenue(this)">
+        <select id="venues"  onchange="forFetching()">
             <option>All Venues</option>
         </select>
 
-        <select onchange="sorting(this)">
+        <select id="sort" onchange="forFetching()">
             <option>Sort-By</option>
             <option>Newest-first</option>
             <option>Oldest-first</option>

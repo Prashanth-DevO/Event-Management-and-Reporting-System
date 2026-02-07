@@ -32,6 +32,4 @@ const userRegisterSchema = new Schema({
 })
 
 
-const UserRegister = mongoose.model("UserRegister", userRegisterSchema);
-
-export default UserRegister; 
+export const UserRegister = mongoose.model("UserRegister", userRegisterSchema);

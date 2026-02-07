@@ -1,6 +1,6 @@
 import { Event } from "../models/event.model.js";
 
-const createEvent = async (req,res) => {
+const createEventAdmin = async (req,res) => {
     try {
         const { eventName, clubName, startDate, endDate, coordinator, adminUser , venue } = req.body;
  
@@ -27,7 +27,7 @@ const createEvent = async (req,res) => {
     }
 }
 
-const eventsFetch= async (req, res) => {
+const eventsFetchAdmin= async (req, res) => {
     try {
         const adminUser = req.query.adminUser;
         const events = await Event.find({ adminUser: adminUser });
@@ -39,70 +39,34 @@ const eventsFetch= async (req, res) => {
     }
 }
 
-const allEventsFetch = async(req,res) => {
-    try {
-         const AllEvents = await Event.find({});
-         res.status(200).json(AllEvents);
-    }
-    catch (error) {
-        res.status(500).json({message: "Server Failed to get all the events", error: error.message});
-    }
-}
-
-const searchClub = async(req , res) => {
-    try {
-         const clubName = req.query.clubName;
-         const events  =await Event.find({clubName:clubName});
-         res.status(200).json(events);
-    }
-    catch (error) {
-        res.status(500).json({message: "Server failed while fetch base on clubs", error: error.message});
-    }
-}
-
-const searchVenue = async(req,res) =>{
-    try {
-        const venue = req.query.venueName;
-        const events  =await Event.find({venue : venue});
+const eventMenu= async(req,res) => {
+     try {
+        const filter = {};
+        const { club , venue , search , sort } = req.body;
+        if(club!=="All Clubs"){
+            filter.clubName=club;
+        }
+        if(venue!=="All Venues"){
+            filter.venue = venue;
+        }
+        if(search!==""){
+            filter.eventName = search;
+        }
+        let data = Event.find(filter);
+        if(sort==="New"){
+            data = data.sort({startDate:-1});
+        }
+        else if(sort==="Old"){
+            data = data.sort({startDate : 1});
+        }
+        const events = await data;
         res.status(200).json(events);
-    }
-    catch(error) {
-        res.status(500).json({message: "Server failed while fetch base on venues", error: error.message})
-    }
+
+     }
+     catch (error){
+        res.status(500).json({ message: "Server Error", error: error.message });
+     }
 }
 
-const sortOld = async(req, res) =>{
-    try {
-       const events = await Event.find().sort({startDate: 1});
-       res.status(200).json(events);
 
-    }
-    catch(error) {
-        res.status(500).json({message: "Server failed while fetch base on sortOld", error: error.message});
-    }
-
-}
-
-const sortNew = async(req , res) => {
-    try {
-        const events = await Event.find().sort({startDate: -1});
-        res.status(200).json(events);
-    }
-    catch(error) {
-         res.status(500).json({message: "Server failed while fetch base on sortNew", error: error.message});
-    }
-
-}
-
-const searchEvent = async(req,res)=>{
-    try{
-        const eventName = req.query.eventName;
-        const event =await Event.find({eventName:eventName});
-        res.status(200).json(event);
-    }
-    catch(error){
-        res.status(500).json({message: "Server failed while fetch base on search", error: error.message});
-    }
-}
-
-export { createEvent , eventsFetch , allEventsFetch  , searchClub , searchVenue , sortOld , sortNew , searchEvent};
+export { createEventAdmin , eventsFetchAdmin , eventMenu };
