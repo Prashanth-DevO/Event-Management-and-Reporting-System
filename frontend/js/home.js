@@ -47,23 +47,28 @@ document.getElementById("loginForm").addEventListener("submit", async(e) => {
         const response = await fetch("http://localhost:3000/api/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            credentials: "include",
             body: JSON.stringify(formDetails)
         });
+        console.log("Login response status:", response.status);
         if (response.ok) {
-            localStorage.setItem("token",response.token);
+            const result = await response.json();
+            console.log("Login result:", result);
             if (role === "participant") {
-                window.open("pages/user.html", "_self");
+                window.location.href = "pages/user.html";
             } else if (role === "admin") {
-                window.open("pages/admin.html", "_self");
+                window.location.href = "pages/admin.html";
             }
         }
         else {
-            alert("Login failed: " );
+            const errorResult = await response.json();
+            alert("Login failed: " + (errorResult.message || response.statusText));
         }
        
     }
     catch (error) {
         console.error("Error during login:", error);
+        alert("Login error: " + error.message);
     }
 });
 
@@ -87,22 +92,24 @@ document.getElementById("registerForm").addEventListener("submit", async(e) => {
         const response = await fetch("http://localhost:3000/api/auth/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            credentials: "include",
             body: JSON.stringify(formDetails)
         });
         const result = await response.json();
+        console.log("Register response status:", response.status);
+        console.log("Register result:", result);
         if (response.ok) {
-            localStorage.setItem("token",response.token);
             if (role === "participant") {
-                window.open("pages/user.html", "_self");
+                window.location.href = "pages/user.html";
             } else if (role === "admin") {
-                window.open("pages/admin.html", "_self");
+                window.location.href = "pages/admin.html";
             }
-            openLogin(role);
         } else {
             alert("Registration failed: " + result.message);
         }
     }
     catch (error) {
         console.error("Error during registration:", error);
+        alert("Registration error: " + error.message);
     }
 });

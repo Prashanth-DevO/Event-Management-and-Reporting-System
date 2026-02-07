@@ -21,9 +21,15 @@ const registerUser = async (req, res) => {
             password :hash
         })
         await newUser.save();
+        const token= generateToken(newUser._id);
+        res.cookie("token", token,{
+            httpOnly: true,
+            sameSite: "lax",
+            secure: false,
+            maxAge: 24 * 60 * 60 * 1000
+        })
         res.status(201).json({
-            message: "User registered successfully",
-            token: generateToken(newUser._id)
+            message: "User registered successfully"
         });
     }
     catch (error) {
@@ -45,10 +51,15 @@ const loginUser = async (req,res) => {
         if(!match){
             return res.status(400).json({message: "Invalid email or password"});
         }
-
+        const token= generateToken(exists._id);
+        res.cookie("token", token , {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+            maxAge: 24 * 60 * 60 * 1000
+        })
         res.status(200).json({
-            message: "Login successful",
-            token: generateToken(match._id)
+            message: "Login successful"
         });
     }
     catch (error){

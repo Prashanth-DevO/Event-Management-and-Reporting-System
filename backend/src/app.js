@@ -1,22 +1,21 @@
 import express from "express";
 import loginRouter from "./routes/login.route.js";
 import eventRouter from "./routes/event.route.js";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 
 
-// This have to learn way....
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    if (req.method === "OPTIONS") {
-        return res.sendStatus(200);
-    }
-    next();
-});
+// This have to learn why....
+app.use(cors({
+    origin: "http://localhost:5500",
+    credentials: true
+}));
+
 
 app.use("/api/auth",loginRouter);
 app.use("/api/events", eventRouter);
