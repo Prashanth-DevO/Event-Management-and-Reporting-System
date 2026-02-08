@@ -3,6 +3,7 @@ import { Event } from "../models/event.model.js";
 const createEventAdmin = async (req,res) => {
     try {
         const { eventName, clubName, startDate, endDate, coordinator, adminUser , venue } = req.body;
+        const user = req.user;
  
         const existingEvent = await Event.findOne({ eventName, startDate });
         if(existingEvent){
@@ -15,7 +16,7 @@ const createEventAdmin = async (req,res) => {
             startDate,
             endDate,
             coordinator,
-            adminUser,
+            adminUser:user.firstName,
             venue
         })
         await newEvent.save();
@@ -29,8 +30,8 @@ const createEventAdmin = async (req,res) => {
 
 const eventsFetchAdmin= async (req, res) => {
     try {
-        const adminUser = req.query.adminUser;
-        const events = await Event.find({ adminUser: adminUser });
+        const user = req.user;
+        const events = await Event.find({ adminUser: user.firstName });
         res.status(200).json(events);
 
     }

@@ -1,13 +1,7 @@
-const form = document.getElementById("event-form");
+const form  = document.getElementById("event-form") ;
 
 form.addEventListener("submit", async(e) => {
     e.preventDefault();
-    const adminUser = document.getElementById("adminUser").value.trim();
-    if (!adminUser) {
-        alert("Admin username required");
-        return;
-    }
-
     const eventName = document.getElementById("event-name").value.trim();
     const club = document.getElementById("club-name").value.trim();
     const start = document.getElementById("start-date").value;
@@ -38,12 +32,12 @@ form.addEventListener("submit", async(e) => {
                     contactNumber:coord2_num
                 }
             ],
-            adminUser,
             venue,
             participants:[]
         }
         const response = await fetch("http://localhost:3000/api/events/create",{
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type":"application/json"
             },
@@ -104,9 +98,10 @@ function appendInToTables(events){
 
 async function fetchEvents() {
     try {
-        const adminUser = document.getElementById("adminUser").value;
-
-        const response = await fetch(`http://localhost:3000/api/events/fetch?adminUser=${adminUser}`);
+        const response = await fetch(`http://localhost:3000/api/events/fetch`, {
+            method: "GET",
+            credentials: "include"
+        });
 
         if(!response.ok){
             console.error(`HTTP ERROR ${response.status}`);
@@ -120,3 +115,5 @@ async function fetchEvents() {
          console.error("Error during the fetch events");
     }
 }
+
+fetchEvents();
