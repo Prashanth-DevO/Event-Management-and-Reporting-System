@@ -24,10 +24,9 @@ const participantsSchema = new Schema({
         required:true,
         trim:true
     },
-    registrationNumber: {
+    payment: {
         type:String,
-        required:true,
-        trim:true
+        required: true
     }
 })
     

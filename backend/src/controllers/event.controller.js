@@ -2,7 +2,7 @@ import { Event } from "../models/event.model.js";
 
 const createEventAdmin = async (req,res) => {
     try {
-        const { eventName, clubName, startDate, endDate, coordinator, adminUser , venue } = req.body;
+        const { eventName, clubName, startDate, endDate, coordinator, venue } = req.body;
         const user = req.user;
  
         const existingEvent = await Event.findOne({ eventName, startDate });
@@ -69,5 +69,36 @@ const eventMenu= async(req,res) => {
      }
 }
 
+const registerEvent = async(req,res) => {
+    try {
+        const eventId = req.body.eventId;
+        const user = req.user;
+        if(!eventId){
+            res.status(400).json({message: "no eventId"})
+            return;
+        }
+        if(!user){
+            res.status(400).json({message: "No User"})
+            return;
+        }
+        const event = await Event.findById(eventId);
+        const exists = event.participants.find(
+            p => p.email === user.email
+        );
+        if(exists){
+            res.status(400).json({message: "already registerd bro!!!!!"})
+        }
+        event.participants.push({
+            name:user.firstName,
+            email:user.email,
+            payment:"unpaid"
+        })
 
-export { createEventAdmin , eventsFetchAdmin , eventMenu };
+        await event.save();
+        res.status(200).json({ message: "Successfully added in event List"});
+    }
+    catch (error){
+        res.status(500).json({ message: "Server Error from registerEvent", error: error.message });
+    }
+}
+export { createEventAdmin , eventsFetchAdmin , eventMenu , registerEvent};

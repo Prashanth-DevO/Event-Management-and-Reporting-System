@@ -19,6 +19,31 @@ function formatDate(dateString) {
 
 let condition = true;
 
+async function register(eventid){
+    try {
+        const response =await fetch("http://localhost:3000/api/events/register",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            credentials:"include",
+            body: JSON.stringify({ eventId: eventid })
+        })
+        const data =await response.json();
+        if(response.ok){
+            alert("Your registration is confirmed");
+            alert(data.message);
+        }
+        else{
+            alert("Failed to register to the event");
+            alert(data.message);
+        }
+    }
+    catch(error) {
+         console.error("Frontend register error:", error);
+    }
+}
+
 function menufunction(events){
     eventsMenu.innerHTML = "";
     let count=0;
@@ -28,7 +53,6 @@ function menufunction(events){
          count++;
          clubMenuSet.add(event.clubName);
          venueSet.add(event.venue);
-
          
          const card = document.createElement("div");
          card.className="event-card";

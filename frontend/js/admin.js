@@ -86,8 +86,8 @@ function appendInToTables(events){
             <td>${coordinators}</td>
             <tb>${event.venue}</td>
             <td class="Buttons">
-                <button id="downloadReport" onclick="DownloadReport(${event._id})">DownloadReport</button>
-                <button id="downloadParticipants" onclick="DownloadParticipants(${event._id})">Participants</button>
+                <button id="downloadReport" onclick="DownloadReport(${event._id})" class="btn btn-primary">DownloadReport</button>
+                <button id="downloadParticipants" onclick="DownloadParticipants(${event._id})" class="btn btn-primary">Participants</button>
             </td>
         `;
         tableBody.appendChild(row);
