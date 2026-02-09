@@ -43,25 +43,31 @@ const eventsFetchAdmin= async (req, res) => {
 const eventMenu= async(req,res) => {
      try {
         const filter = {};
-        const { club , venue , search , sort } = req.body;
-        if(club!=="All Clubs"){
-            filter.clubName=club;
+        const { club , venue , search , sort , eventId} = req.body;
+        if(eventId!=="null"){
+            const event =await Event.findById(eventId);
+            res.status(200).json(event);
         }
-        if(venue!=="All Venues"){
-            filter.venue = venue;
+        else{
+            if(club!=="All Clubs"){
+                filter.clubName=club;
+            }
+            if(venue!=="All Venues"){
+                filter.venue = venue;
+            }
+            if(search!==""){
+                filter.eventName = search;
+            }
+            let data =await Event.find(filter);
+            if(sort==="New"){
+                data = data.sort({startDate:-1});
+            }
+            else if(sort==="Old"){
+                data = data.sort({startDate : 1});
+            }
+            const events = data;
+            res.status(200).json(events);
         }
-        if(search!==""){
-            filter.eventName = search;
-        }
-        let data = Event.find(filter);
-        if(sort==="New"){
-            data = data.sort({startDate:-1});
-        }
-        else if(sort==="Old"){
-            data = data.sort({startDate : 1});
-        }
-        const events = await data;
-        res.status(200).json(events);
 
      }
      catch (error){
@@ -86,7 +92,8 @@ const registerEvent = async(req,res) => {
             p => p.email === user.email
         );
         if(exists){
-            res.status(400).json({message: "already registerd bro!!!!!"})
+            res.status(400).json({message: "already registerd bro!!!!!"});
+            return;
         }
         event.participants.push({
             name:user.firstName,

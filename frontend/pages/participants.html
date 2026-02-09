@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Participants</title>
+    <link rel="stylesheet" href="../css/participants.css">
+</head>
+<body>
+
+<div class="container" id="report">
+    <h1 id="eventName">Event Name</h1>
+    <h2 id="clubName">Club Name</h2>
+-
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Gmail</th>
+                <th>Payment Details</th>
+                <th>Other</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <tr>
+                <td>Prashanth</td>
+                <td>example@gmail.com</td>
+                <td>Paid</td>
+                <td>—</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<button onclick="download()" id="button">Download PDF</button>
+<script src="../js/participants.js"></script>
+</body>
+</html>

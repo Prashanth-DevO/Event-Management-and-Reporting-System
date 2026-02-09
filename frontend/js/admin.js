@@ -86,8 +86,8 @@ function appendInToTables(events){
             <td>${coordinators}</td>
             <tb>${event.venue}</td>
             <td class="Buttons">
-                <button id="downloadReport" onclick="DownloadReport(${event._id})" class="btn btn-primary">DownloadReport</button>
-                <button id="downloadParticipants" onclick="DownloadParticipants(${event._id})" class="btn btn-primary">Participants</button>
+                <button id="downloadReport" onclick="DownloadReport('${event._id}')" class="btn btn-primary">DownloadReport</button>
+                <button id="downloadParticipants" onclick="DownloadParticipants('${event._id}')" class="btn btn-primary">Participants</button>
             </td>
         `;
         tableBody.appendChild(row);
@@ -95,6 +95,13 @@ function appendInToTables(events){
         
 }
 
+function DownloadParticipants(eventId){
+    window.open(`../pages/participants.html?eventId=${eventId}`,"_self");
+}
+
+function DownloadReport(eventId){
+    window.open(`../pages/download.html?eventId=${eventId}`,"_self");
+}
 
 async function fetchEvents() {
     try {

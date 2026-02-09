@@ -2,28 +2,90 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>EventFlow — Download</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Report</title>
     <link rel="stylesheet" href="../css/download.css">
 </head>
 <body>
 
-<header class="navbar">
-    <h1>EventFlow — Downloads</h1>
-</header>
+<div class="report-container">
 
-<main class="container">
-    <section class="download-card">
-        <h2> Fill the Details</h2>
-        <div class="btn-group">
-            <button class="btn btn-primary">Download CSV</button>
-            <button class="btn btn-secondary">Download PDF</button>
+    <h1 class="title">EVENT REPORT</h1>
+
+    <div class="details">
+        <p id="eventName1"><strong>Event Name:</strong> ____________</p>
+        <p id="clubName1"><strong>Organized by:</strong> ____________</p>
+        <p id="venue1"><strong>Venue:</strong> ____________</p>
+        <p id="date"><strong>Date:</strong> ____________</p>
+        <p id="totalPartitipants1"><strong>Total Participants:</strong> ____________</p>
+        <p id="coordinators"><strong>Coordinators:</strong> ____________ , ____________</p>
+    </div>
+
+    <h2>Introduction</h2>
+    <p>
+        This report is submitted for the kind perusal and academic records of the Dean. 
+        The event titled <strong id="eventName2">"[Event Name]"</strong> was successfully organized by the 
+        <strong id="clubName2">[Club Name]</strong> under the School of Computing Science at 
+        <strong id="venue2">[Venue]</strong>. The program was conducted in alignment with institutional 
+        academic objectives and aimed at enhancing the technical knowledge, practical exposure, 
+        and collaborative learning experience of the participants.
+    </p>
+
+    <h2>Objectives of the Event</h2>
+    <ul>
+        <li>To provide exposure to relevant technology or domain knowledge.</li>
+        <li>To enhance practical and problem‑solving skills.</li>
+        <li>To encourage teamwork, innovation, and technical discussion.</li>
+        <li>To support academic and professional development of students.</li>
+    </ul>
+
+    <h2>Event Proceedings</h2>
+    <p>
+        The event commenced with a welcome address and included structured technical sessions, 
+        interactive activities, and participant engagement throughout the schedule. 
+        A total of <strong id="totalPartitipants2">[Total Participants]</strong> students actively participated and the 
+        event was effectively coordinated by <strong id="coordinator1">[Coordinator 1]</strong> and 
+        <strong id="coordinator2">[Coordinator 2]</strong>.
+    </p>
+
+    <h2>Outcomes</h2>
+    <ul>
+        <li>Improved understanding of the subject matter.</li>
+        <li>Enhanced analytical and practical skills.</li>
+        <li>Encouraged collaboration and peer learning.</li>
+        <li>Strengthened academic engagement and innovation interest.</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>
+        The event was conducted successfully and fulfilled its intended academic objectives. 
+        Such initiatives contribute significantly to holistic student development and 
+        institutional excellence.
+    </p>
+
+    <div class="signatures">
+        <div class="sign-box">
+            <p id="coordinator11">Event Coordinator 1</p>
+            <div class="line"></div>
         </div>
-    </section>
-</main>
 
-<footer class="footer">
-    © 2026 EventFlow. All rights reserved.
-</footer>
+        <div class="sign-box">
+            <p id="coordinator22">Event Coordinator 2</p>
+            <div class="line"></div>
+        </div>
 
+        <div class="sign-box">
+            <p id="admin">Event Admin </p>
+            <div class="line"></div>
+        </div>
+
+        <div class="sign-box">
+            <p>Head / Dean</p>
+            <div class="line"></div>
+        </div>
+    </div>
+
+</div>
+<script src="../js/download.js"></script>
 </body>
 </html>

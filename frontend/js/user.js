@@ -97,7 +97,8 @@ async function forFetching(){
              club :clubsMenu.value ,
              venue : venueName.value ,
              search : search.value , 
-             sort : sort.value
+             sort : sort.value,
+             eventId:"null"
         }
         const response = await fetch("http://localhost:3000/api/events/menu",{
             method: "POST",
