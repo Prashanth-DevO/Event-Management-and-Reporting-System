@@ -9,7 +9,7 @@ const venue2  = document.getElementById("venue2");
 const date = document.getElementById("date");
 const totalParticipants1 = document.getElementById("totalParticipants1");
 const totalParticipants2 = document.getElementById("totalParticipants2");
-const coordinators = document.getElementById("coordiantors");
+const coordinators = document.getElementById("coordinators");
 const coordinator1 = document.getElementById("coordinator1");
 const coordinator11 = document.getElementById("coordinator11");
 const coordinator2 = document.getElementById("coordinator2");
@@ -42,7 +42,7 @@ function listTheData(event) {
     const coord1 = event.coordinator?.[0];
     const coord2 = event.coordinator?.[1];
 
-    coordinators.innerHTML = `${coord1?.name || ""}, ${coord2?.name || ""}`;
+    coordinators.innerHTML = `<strong>Coordinators: </strong>${coord1?.name || ""}, ${coord2?.name || ""}`;
 
     coordinator1.innerHTML = coord1?.name || "";
     coordinator2.innerHTML = coord2?.name || "";
@@ -83,6 +83,6 @@ async function fetchingData(){
 
 fetchingData();
 
-function download(){
+function downloadReport(){
     window.print();
 };
