@@ -1,6 +1,7 @@
 import express from "express";
 import loginRouter from "./routes/login.route.js";
 import eventRouter from "./routes/event.route.js";
+import emailRouter from "./routes/email.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -19,5 +20,6 @@ app.use(cors({
 
 app.use("/api/auth",loginRouter);
 app.use("/api/events", eventRouter);
+app.use("/api/email",emailRouter);
 
 export default app;
