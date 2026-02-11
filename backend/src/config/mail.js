@@ -1,24 +1,29 @@
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+
+dotenv.config({
+  path:"../.env"
+})
 
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
-  secure: false, // Use true for port 465, false for port 587
+  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // for ssl (465)   , it is false for tls (587)
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
+    user: process.env.EMAIL_USER, 
+    pass: process.env.EMAIL_PASS 
   },
 });
 
-const sendEmail = async(to,subject,html) => {
-    const info = await transporter.sendMail({
-    from: process.env.FROM_EMAIL,
-    to,
-    subject,
-    html
-  });
-  console.log(process.env.SMTP_HOST);
-  return info;
-}
+
+const sendEmail = async (to, subject, text) => {
+    await transporter.sendMail({
+        from: `"EventFlow" <${process.env.EMAIL_USER}>`,
+        to,
+        subject,
+        text
+    });
+};
 
 export default sendEmail;
