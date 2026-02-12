@@ -1,13 +1,12 @@
-import sendEmail from "../config/mail.js"
+import { addEmailJob } from "../util/email.queue.js";
 
 const sendEmailServices = async(req , res) => {
     try {
-        console.log("EMAIL API HIT");
         const {toEmail , subject , message} = req.body;
         if(!toEmail || !subject || !message) {
             return res.status(400).json({message:"required all the data"});
         }
-        await sendEmail(toEmail, subject, `<p>${message}</p>`);
+        await addEmailJob(toEmail, subject, `<p>${message}</p>`);
         res.status(200).json({ message: "Email sent successfully" });
     }
     catch (error) {

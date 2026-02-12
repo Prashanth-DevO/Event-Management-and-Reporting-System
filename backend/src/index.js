@@ -7,6 +7,9 @@ dotenv.config({
     path: "../.env"
 });
 
+// Start background workers (email worker) after loading env
+import "./util/email.worker.js";
+
 const startServer = async() => {
     try{
         await connectDB();

@@ -5,6 +5,7 @@ dotenv.config({
   path:"../.env"
 })
 
+
 const transporter = nodemailer.createTransport({
   service: "gmail",
   host: "smtp.gmail.com",
@@ -16,14 +17,5 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+export default transporter;
 
-const sendEmail = async (to, subject, text) => {
-    await transporter.sendMail({
-        from: `"EventFlow" <${process.env.EMAIL_USER}>`,
-        to,
-        subject,
-        text
-    });
-};
-
-export default sendEmail;
