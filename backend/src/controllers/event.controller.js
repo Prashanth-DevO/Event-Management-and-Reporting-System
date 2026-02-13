@@ -1,4 +1,5 @@
 import { Event } from "../models/event.model.js";
+import { eventRegistrationEmail } from "../services/email.service.js";
 
 const createEventAdmin = async (req,res) => {
     try {
@@ -102,6 +103,7 @@ const registerEvent = async(req,res) => {
         })
 
         await event.save();
+        await eventRegistrationEmail(user , event);
         res.status(200).json({ message: "Successfully added in event List"});
     }
     catch (error){

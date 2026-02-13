@@ -1,4 +1,5 @@
 import { UserRegister } from '../models/user.model.js';
+import { registrationEmail } from '../services/email.service.js';
 import bcrypt from "bcrypt";
 import generateToken from "../util/jwt.js"
 
@@ -28,6 +29,7 @@ const registerUser = async (req, res) => {
             secure: false,
             maxAge: 24 * 60 * 60 * 1000
         })
+        await registrationEmail(newUser);
         res.status(201).json({
             message: "User registered successfully"
         });
