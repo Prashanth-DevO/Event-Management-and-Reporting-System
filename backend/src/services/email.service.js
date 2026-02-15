@@ -1,4 +1,6 @@
 import { addEmailJob } from "../util/email.queue.js";
+import { Event } from "../models/event.model.js";
+
 
 const eventRegistrationEmail = async(user,event) => {
     try {
@@ -27,5 +29,21 @@ const registrationEmail = async(user) => {
     }
 }
 
-export { eventRegistrationEmail , registrationEmail};
+const remainder = async(events) => {
+    try {
+         for (const event of events) {
+            for (const participant of event.participants) {
+                const email = participant.email;
+                const subject = `Remainder !!! EventFlow`;
+                const html =  `<p>Dear ${participant.firstName}</p><br>
+                <p>The event ${event.eventName} is going to start today , so please be ready as per the time mentioned in the event</p>`;
+                await addEmailJob(email , subject , html);
+            }
+        }
+    }
+    catch (error) {
+        console.error("failed to send the remainder");
+    }
+}
 
+export { eventRegistrationEmail , registrationEmail , remainder};

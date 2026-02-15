@@ -1,6 +1,8 @@
 import { Worker } from "bullmq";
+import getEvents  from "../schedular/remainderSchedular.js";
 import connection from "../config/redis.js";
 import transporter from "../config/mail.js";
+import { remainder } from "../services/email.service.js";
 
 const worker = new Worker(
   "email-queue",
@@ -22,3 +24,12 @@ const worker = new Worker(
   },
   { connection }
 );
+
+const worker2 = new Worker(
+  "start_search",
+  async()=>{
+     const events = await getEvents();
+     await remainder(events);
+  },
+  {connection}
+)
