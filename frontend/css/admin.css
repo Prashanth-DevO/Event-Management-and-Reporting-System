@@ -6,12 +6,29 @@
 }
 
 body {
-    background: linear-gradient(135deg, #7ca7f8, #63c2f5);
+    background: #000;
     display: flex;
     flex-direction: column;
     height: 100%;
     color: #ffffff;
     min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ===== Canvas Background ===== */
+#bgCanvas{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Keep UI above canvas */
+header, main, footer {
+    position: relative;
+    z-index: 1;
 }
 
 main{
@@ -19,9 +36,11 @@ main{
 }
 
 .navbar {
-    background-color: #063da2;
+    background: rgba(6, 61, 162, 0.95);
+    backdrop-filter: blur(10px);
     padding: 16px;
     text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .container {
@@ -30,6 +49,9 @@ main{
 
 .stats {
     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .stats span {
@@ -44,13 +66,14 @@ main{
 .event-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     overflow: hidden;
+    backdrop-filter: blur(8px);
 }
 
 .event-table thead {
-    background-color: #063da2;
+    background-color: rgba(6, 61, 162, 0.9);
 }
 
 .event-table th,
@@ -61,11 +84,6 @@ main{
 
 .event-table tbody tr:hover {
     background-color: rgba(0, 123, 255, 0.15);
-}
-
-.stats{
-    display: flex;
-    justify-content: space-between;;
 }
 
 .actions {
@@ -113,6 +131,8 @@ main{
 .footer {
     text-align: center;
     padding: 16px;
-    background-color: #063da2;
+    background: rgba(6, 61, 162, 0.95);
+    backdrop-filter: blur(10px);
     margin-top: 40px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
 }

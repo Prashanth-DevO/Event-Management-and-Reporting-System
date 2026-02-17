@@ -113,3 +113,73 @@ document.getElementById("registerForm").addEventListener("submit", async(e) => {
         alert("Registration error: " + error.message);
     }
 });
+
+
+const canvas = document.getElementById("bgCanvas");
+const ctx = canvas.getContext("2d");
+
+let particles = [];
+const PARTICLE_COUNT = 100;
+const CONNECT_DISTANCE = 120;
+
+function resizeCanvas(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+function createParticles(){
+    particles = [];
+    for(let i = 0; i < PARTICLE_COUNT; i++){
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.7,
+            vy: (Math.random() - 0.5) * 0.7,
+            r: Math.random() * 2 + 1
+        });
+    }
+}
+createParticles();
+
+function drawParticles(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // draw circles
+    for(const p of particles){
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // bounce edges
+        if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = "white";
+        ctx.fill();
+    }
+
+    // connect nearby particles
+    for(let i = 0; i < particles.length; i++){
+        for(let j = i + 1; j < particles.length; j++){
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if(dist < CONNECT_DISTANCE){
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.strokeStyle = `rgba(255,255,255,${1 - dist / CONNECT_DISTANCE})`;
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+            }
+        }
+    }
+
+    requestAnimationFrame(drawParticles);
+}
+
+drawParticles();
