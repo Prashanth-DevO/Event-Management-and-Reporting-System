@@ -60,11 +60,6 @@ form.addEventListener("submit", async(e) => {
 
 });
 
-document.getElementById("download_pg").onclick = () => {
-    window.open("../pages/download.html","_self");
-}
-
-
 function appendInToTables(events){
     const tableBody = document.getElementById("tableBody");
     tableBody.innerHTML="";

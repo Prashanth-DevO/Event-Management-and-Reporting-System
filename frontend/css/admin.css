@@ -9,14 +9,12 @@ body {
     background: #000;
     display: flex;
     flex-direction: column;
-    height: 100%;
     color: #ffffff;
     min-height: 100vh;
     overflow-x: hidden;
 }
 
-/* ===== Canvas Background ===== */
-#bgCanvas{
+#bgCanvas {
     position: fixed;
     top: 0;
     left: 0;
@@ -25,13 +23,12 @@ body {
     z-index: -1;
 }
 
-/* Keep UI above canvas */
 header, main, footer {
     position: relative;
     z-index: 1;
 }
 
-main{
+main {
     flex: 1;
 }
 

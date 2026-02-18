@@ -11,7 +11,7 @@ body {
     background: #ffffff;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 h1, h2 {
@@ -58,12 +58,10 @@ button {
     transition: all 0.2s ease;
 }
 
-
 button:hover {
     background-color: #1a252f;
     transform: translateY(-1px);
 }
-
 
 button:active {
     transform: translateY(0);
@@ -77,7 +75,6 @@ button:disabled {
 }
 
 @media print {
-
     body * {
         visibility: hidden;
     }
@@ -96,6 +93,7 @@ button:disabled {
     #button {
         display: none;
     }
+
     @page {
         margin: 0;
     }
@@ -103,7 +101,6 @@ button:disabled {
     body {
         margin: 20px;
     }
-
 }
 
 

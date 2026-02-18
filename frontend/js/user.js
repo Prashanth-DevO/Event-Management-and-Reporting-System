@@ -122,9 +122,10 @@ async function forFetching(){
     }
 }
 
-forFetching();
+window.addEventListener("load", () => {
+    forFetching();
+});
 
-/* ===== Particle Background Canvas ===== */
 
 const canvas = document.getElementById("bgCanvas");
 const ctx = canvas.getContext("2d");
@@ -141,9 +142,6 @@ function resizeCanvas() {
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
-// Clear canvas with black background
-ctx.fillStyle = "#000";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 function createParticles() {
     particles = [];
@@ -162,16 +160,12 @@ function createParticles() {
 createParticles();
 
 function animateParticles() {
-    // Clear with black background
-    ctx.fillStyle = "#000";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // FIX
 
-    // Move + draw particles
     for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
 
-        // bounce from edges
         if (p.x <= 0 || p.x >= canvas.width) p.vx *= -1;
         if (p.y <= 0 || p.y >= canvas.height) p.vy *= -1;
 
@@ -181,7 +175,6 @@ function animateParticles() {
         ctx.fill();
     }
 
-    // Connect nearby particles
     for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
             const dx = particles[i].x - particles[j].x;
