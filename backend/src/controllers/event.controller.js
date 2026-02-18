@@ -44,31 +44,25 @@ const eventsFetchAdmin= async (req, res) => {
 const eventMenu= async(req,res) => {
      try {
         const filter = {};
-        const { club , venue , search , sort , eventId} = req.body;
-        if(eventId!=="null"){
-            const event =await Event.findById(eventId);
-            res.status(200).json(event);
+        const { club , venue , search , sort , pageNo, limit} = req.body;
+        if(club!=="All Clubs"){
+            filter.clubName=club;
         }
-        else{
-            if(club!=="All Clubs"){
-                filter.clubName=club;
-            }
-            if(venue!=="All Venues"){
-                filter.venue = venue;
-            }
-            if(search!==""){
-                filter.eventName = search;
-            }
-            let data =await Event.find(filter);
-            if(sort==="New"){
-                data = data.sort({startDate:-1});
-            }
-            else if(sort==="Old"){
-                data = data.sort({startDate : 1});
-            }
-            const events = data;
-            res.status(200).json(events);
+        if(venue!=="All Venues"){
+            filter.venue = venue;
         }
+        if(search!==""){
+            filter.eventName = search;
+        }
+        let data = Event.find(filter);
+        if(sort==="New"){
+            data = data.sort({startDate:-1});
+        }
+        else if(sort==="Old"){
+            data = data.sort({startDate : 1});
+        }
+        const events =await data.skip((pageNo-1)*limit).limit(limit);
+        res.status(200).json(events);
 
      }
      catch (error){
@@ -110,4 +104,41 @@ const registerEvent = async(req,res) => {
         res.status(500).json({ message: "Server Error from registerEvent", error: error.message });
     }
 }
-export { createEventAdmin , eventsFetchAdmin , eventMenu , registerEvent};
+
+const deleteEvent = async(req,res) => {
+    try {
+        const eventId = req.body.eventId;
+        if(!eventId){
+            res.status(400).json({message: "no eventId"})
+            return;
+        }
+        const verify = await Event.findByIdAndDelete(eventId);
+        if(!verify){
+            res.status(404).json({message:"Event not fount"});
+        }
+        res.status(200).json({message: "Event deleted successfully"});
+    }
+    catch (error) {
+        res.status(500).json({ message: "Server Error from deleteEvent", error: error.message });
+    }
+}
+
+const eventMenuDetails = async(req,res) => {
+    try {
+        const clubSet = new Set();
+        const venueSet = new Set();
+        const events = await Event.find({});
+        let count =0;
+        events.forEach(event => {
+            count++;
+            clubSet.add(event.clubName);
+            venueSet.add(event.venue);
+        })
+        res.status(200).json({ count, clubset: Array.from(clubSet) , venueset: Array.from(venueSet) });
+    }
+    catch (error) {
+        res.status(500).json({ message: "Server Error from eventMenuDetails", error: error.message });
+    }
+}
+
+export { createEventAdmin , eventsFetchAdmin , eventMenu , registerEvent , deleteEvent , eventMenuDetails };

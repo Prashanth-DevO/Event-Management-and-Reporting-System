@@ -7,6 +7,23 @@ const numberOfVenues = document.getElementById("numberOfVenues");
 const sort = document.getElementById("sort");
 const search = document.getElementById("Search");
 
+let page = 1;
+let totalPages = 10;
+
+function prevPage() {
+    if (page > 1) {
+        page = page - 1;
+        forFetching();
+    }
+}
+
+function nextPage() {
+    if(page!=totalPages){
+        page = page + 1;
+        forFetching();
+    }
+}
+
 function formatDate(dateString) {
     const date = new Date(dateString);
 
@@ -46,14 +63,7 @@ async function register(eventid){
 
 function menufunction(events){
     eventsMenu.innerHTML = "";
-    let count=0;
-    let clubMenuSet = new Set();
-    let venueSet = new Set();
-    events.forEach(event =>{
-         count++;
-         clubMenuSet.add(event.clubName);
-         venueSet.add(event.venue);
-         
+    events.forEach(event =>{         
          const card = document.createElement("div");
          card.className="event-card";
          card.innerHTML=`
@@ -67,28 +77,29 @@ function menufunction(events){
          eventsMenu.appendChild(card);
 
     })
-    if (condition) {
-        condition=false;
-        clubsMenu.innerHTML=` <option>All Clubs</option>`;
-        venueName.innerHTML= `<option>All Venues</option>`;
-        numberOfEvents.innerHTML = count;
-        numberOfClubs.innerHTML= clubMenuSet.size;
-        clubMenuSet.forEach(club => {
-            const option1 = document.createElement("option");
-            option1.innerHTML=`
-            ${club}
-            `;
-            clubsMenu.appendChild(option1);
-        })
-        numberOfVenues.innerHTML=venueSet.size;
-        venueSet.forEach(venue_place => {
-            const option2 = document.createElement("option");
-            option2.innerHTML=`
-            ${venue_place}
-            `;
-            venueName.appendChild(option2);
-        })
-    }
+}
+
+function updateDetails(data){
+    numberOfEvents.innerHTML = data.count;
+    totalPages = Math.ceil(data.count/6);
+    numberOfClubs.innerHTML = data.clubset.length;
+    numberOfVenues.innerHTML = data.venueset.length;
+    clubsMenu.innerHTML=` <option>All Clubs</option>`;
+    venueName.innerHTML= `<option>All Venues</option>`;
+    data.clubset.forEach(club => {
+        const option1 = document.createElement("option");
+        option1.innerHTML=`
+        ${club}
+        `;
+        clubsMenu.appendChild(option1);
+    })
+    data.venueset.forEach(venue => {
+        const option2 = document.createElement("option");
+        option2.innerHTML=`
+        ${venue}
+        `;
+        venueName.appendChild(option2);
+    })
 }
 
 async function forFetching(){
@@ -98,8 +109,10 @@ async function forFetching(){
              venue : venueName.value ,
              search : search.value , 
              sort : sort.value,
-             eventId:"null"
-        }
+             pageNo: page,
+             limit: 6
+        };
+
         const response = await fetch("http://localhost:3000/api/events/menu",{
             method: "POST",
             headers:{
@@ -122,8 +135,24 @@ async function forFetching(){
     }
 }
 
+async function fetchdetails(){
+    try {
+        const response = await fetch("http://localhost:3000/api/events/menu/details");
+
+        if(!response.ok){
+            console.error(`Error between - frontend to get the menu ${response.status}`);
+        }
+        const data = await response.json();
+        updateDetails(data);
+    }
+    catch (error) {
+        console.error("Error fetching details:", error);
+    }
+}
+
 window.addEventListener("load", () => {
     forFetching();
+    fetchdetails();
 });
 
 

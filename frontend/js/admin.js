@@ -83,11 +83,40 @@ function appendInToTables(events){
             <td class="Buttons">
                 <button id="downloadReport" onclick="DownloadReport('${event._id}')" class="btn btn-primary">DownloadReport</button>
                 <button id="downloadParticipants" onclick="DownloadParticipants('${event._id}')" class="btn btn-primary">Participants</button>
+                <button id="deleteEvent" onclick="DeleteEvent('${event._id}')" class="btn btn-danger">Delete</button>
             </td>
         `;
         tableBody.appendChild(row);
     });
         
+}
+
+async function DeleteEvent(eventId){
+    try {
+        const confirmDelete =confirm("Are you sure you want to delete this event? This action cannot be undone.");
+        if(!confirmDelete) return;
+        const response = await fetch("http://localhost:3000/api/events/delete",{
+            method: "DELETE",
+            credentials: "include",
+            headers: {
+                'Content-Type': "application/json"
+            },
+            body: JSON.stringify({eventId}),
+        })
+
+        if(!response.ok){
+            const error = response.json().message || response.statusText;
+            alert(`Error deleting event: ${error}`);
+            return;
+        } else {
+            alert("Event deleted successfully");
+            fetchEvents();
+        }
+    }
+    catch (error) {
+        console.error("Error during the delete event", error);
+        alert("Error deleting event. See console for details.");
+    }
 }
 
 function DownloadParticipants(eventId){

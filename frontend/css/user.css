@@ -208,7 +208,7 @@ select option {
     z-index: 10;
 }
 
-.search-btn {
+.Btn {
     padding: 0 22px;
     border: none;
     border-radius: 12px;
@@ -219,12 +219,12 @@ select option {
     transition: 0.25s ease;
 }
 
-.search-btn:hover {
+.Btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 }
 
-.search-btn:active {
+.Btn:active {
     transform: scale(0.97);
 }
 
@@ -242,4 +242,9 @@ select option {
     h1 {
         font-size: 36px;
     }
+}
+
+.page {
+    margin: 5px;
+    padding: 7px;
 }
