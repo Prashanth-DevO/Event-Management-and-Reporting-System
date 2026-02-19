@@ -332,29 +332,6 @@ Then open: `http://localhost:5500`
 
 ---
 
-## File Verification Checklist
-
-- ✅ `backend/package.json` – scripts, dependencies correct
-- ✅ `backend/src/index.js` – loads .env, starts server, imports workers
-- ✅ `backend/src/app.js` – Express setup, CORS configured
-- ✅ `backend/src/config/{database,mail,redis}.js` – connections configured
-- ✅ `backend/src/models/{user,event}.model.js` – schemas with validation
-- ✅ `backend/src/middleware/authMiddleware.js` – JWT verification
-- ✅ `backend/src/controllers/login.controller.js` – register/login/logout
-- ✅ `backend/src/controllers/event.controller.js` – CRUD operations
-- ✅ `backend/src/services/email.service.js` – email templates
-- ✅ `backend/src/util/{email.queue,email.worker,jwt}.js` – queue & auth
-- ✅ `backend/src/schedular/remainderSchedular.js` – event reminder logic
-- ✅ `frontend/home.html` – auth entry point
-- ✅ `frontend/pages/user.html` – event browsing with debounced search
-- ✅ `frontend/pages/admin.html` – admin dashboard
-- ✅ `frontend/pages/participants.html` – participant list
-- ✅ `frontend/pages/download.html` – event report
-- ✅ `frontend/css/user.css` – includes search input + dropdown styles
-- ✅ `frontend/js/user.js` – search debounce (300ms), event filters
-
----
-
 ## Troubleshooting
 
 ### Frontend won't connect to backend
