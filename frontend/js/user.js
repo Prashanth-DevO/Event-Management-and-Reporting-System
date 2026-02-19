@@ -6,6 +6,7 @@ const numberOfClubs = document.getElementById("numberOfClubs");
 const numberOfVenues = document.getElementById("numberOfVenues");
 const sort = document.getElementById("sort");
 const search = document.getElementById("Search");
+const result = document.getElementById("result");
 
 let page = 1;
 let totalPages = 10;
@@ -194,6 +195,62 @@ async function logout() {
      }
 }
 
+const debounceSearch = debounce(fetchSearch , 300);
+
+function debounce(func , delay) {
+    let timer;
+    return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            func.apply(this , args);
+        }, delay);
+    }
+}
+
+function updateSearchResults(events) {
+    if(events.length === 0){
+        result.innerHTML = "<p>No events found</p>";
+        return;
+    }
+    result.innerHTML = "";
+    for( let i=0;i<events.length;i++){
+        const eventDiv = document.createElement("div");
+        eventDiv.innerHTML = `
+           <h4>${events[i]}</h4>
+        `
+        result.appendChild(eventDiv);
+    }
+}
+
+document.addEventListener("click", (e) => {
+    if (!e.target.closest(".search-row")) {
+        result.innerHTML = "";
+    }
+});
+
+async function fetchSearch(value) {
+    try {
+        const response = await fetch("http://localhost:3000/api/events/search",{
+            method: "POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({search: value})
+        })
+        if(response.ok){
+            const searchResult = await response.json();
+            updateSearchResults(searchResult);
+        }
+
+    }
+    catch (error) {
+        console.error("Error during search: ", error);
+    }
+}
+
+search.addEventListener("input", () => {
+    debounceSearch(search.value);
+})
 
 const canvas = document.getElementById("bgCanvas");
 const ctx = canvas.getContext("2d");

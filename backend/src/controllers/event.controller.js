@@ -44,25 +44,36 @@ const eventsFetchAdmin= async (req, res) => {
 const eventMenu= async(req,res) => {
      try {
         const filter = {};
-        const { club , venue , search , sort , pageNo, limit} = req.body;
-        if(club!=="All Clubs"){
-            filter.clubName=club;
+        const { club , venue , search , sort , pageNo, limit, eventId} = req.body;
+        if(eventId){
+            const event = await Event.findById(eventId);
+            if(!event){
+                res.status(404).json({message: "Event not found"});
+                return;
+            }
+            res.status(200).json(event);
+            return;
         }
-        if(venue!=="All Venues"){
-            filter.venue = venue;
+        else {
+            if(club!=="All Clubs"){
+                filter.clubName=club;
+            }
+            if(venue!=="All Venues"){
+                filter.venue = venue;
+            }
+            if(search!==""){
+                filter.eventName ={ $regex :search , $options: "i" };
+            }
+            let data = Event.find(filter);
+            if(sort==="New"){
+                data = data.sort({startDate:-1});
+            }
+            else if(sort==="Old"){
+                data = data.sort({startDate : 1});
+            }
+            const events =await data.skip((pageNo-1)*limit).limit(limit);
+            res.status(200).json(events);
         }
-        if(search!==""){
-            filter.eventName = search;
-        }
-        let data = Event.find(filter);
-        if(sort==="New"){
-            data = data.sort({startDate:-1});
-        }
-        else if(sort==="Old"){
-            data = data.sort({startDate : 1});
-        }
-        const events =await data.skip((pageNo-1)*limit).limit(limit);
-        res.status(200).json(events);
 
      }
      catch (error){
@@ -141,4 +152,21 @@ const eventMenuDetails = async(req,res) => {
     }
 }
 
-export { createEventAdmin , eventsFetchAdmin , eventMenu , registerEvent , deleteEvent , eventMenuDetails };
+const eventsSearch = async(req,res) => {
+    try {
+        const search = req.body.search;
+        if(!search){
+            return res.status(200).json({message: "No search query provided"});
+        }
+        const events = await Event.find({ eventName: { $regex: search, $options: "i" } });
+        let result = [];
+        events.forEach(event => {
+            result.push(event.eventName);
+        })
+        res.status(200).json(result);
+    }
+    catch (error) {
+        res.status(500).json({ message: "Server Error from eventsSearch", error: error.message });
+    }
+}
+export { createEventAdmin , eventsFetchAdmin , eventMenu , registerEvent , deleteEvent , eventMenuDetails ,eventsSearch};

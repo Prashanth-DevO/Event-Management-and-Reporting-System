@@ -342,3 +342,54 @@ select option {
         background-position: 0 50%;
     }
 }
+
+
+/* Search row needs relative positioning for the dropdown */
+.search-row {
+    position: relative;
+    z-index: 999;
+}
+
+/* Debounce result dropdown */
+#result {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    background: rgba(15, 15, 35, 0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    z-index: 1000;
+    margin-top: 6px;
+}
+
+#result div {
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    transition: background 0.2s;
+}
+
+#result div:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#result h4 {
+    margin: 0;
+    font-size: 14px;
+    color: #e0e0e0;
+    font-weight: 500;
+}
+
+#result p {
+    margin: 0;
+    padding: 12px 14px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.4);
+    text-align: center;
+}
+
+

@@ -16,7 +16,7 @@ function listTheData(data){
                 <td>${participant.name}</td>
                 <td>${participant.email}</td>
                 <td>unPaid</td>
-                <td>—</td>
+                <td>________</td>
           `;
           tableBody.appendChild(row);
      })
