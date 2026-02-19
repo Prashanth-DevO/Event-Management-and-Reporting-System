@@ -10,7 +10,7 @@ export const addEmailJob = async (to, subject, html) => {
 
 export const addEventsReminder = async() => {
   await remainderQueue.add(
-    "start_seacrh",
+    "start_search",
     {},
     {
       repeat: {
