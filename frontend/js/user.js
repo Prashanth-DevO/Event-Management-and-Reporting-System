@@ -10,6 +10,21 @@ const search = document.getElementById("Search");
 let page = 1;
 let totalPages = 10;
 
+function loadSkeleton() {
+    eventsMenu.innerHTML = "";
+    for (let i=0; i<6 ;i++){
+        const skeletonCard = document.createElement("div");
+        skeletonCard.className = "skeleton-card";
+        skeletonCard.innerHTML = `
+           <div class="skeleton-title"></div>
+           <div class="skeleton-text"></div>
+           <div class="skeleton-text short"></div>
+           <div class="skeleton-button"></div>
+        `;
+        eventsMenu.appendChild(skeletonCard);
+    }
+}
+
 function prevPage() {
     if (page > 1) {
         page = page - 1;
@@ -104,6 +119,7 @@ function updateDetails(data){
 
 async function forFetching(){
     try {
+        loadSkeleton();
         const data = {
              club :clubsMenu.value ,
              venue : venueName.value ,
