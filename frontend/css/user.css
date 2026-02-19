@@ -21,7 +21,7 @@ header, h1, .subtitle, .top-buttons, .stats-container, .upcoming-section, #event
     z-index: 1;
 }
 
-header {
+header{
     background: rgba(6, 61, 162, 0.9);
     backdrop-filter: blur(10px);
     padding: 15px;
@@ -30,6 +30,15 @@ header {
     align-items: center;
     animation: slideDown 0.8s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+footer {
+    background: rgba(6, 61, 162, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    margin-top: 50px;
+    animation: slideDown 0.8s ease;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
 }
 
 @keyframes slideDown {
@@ -247,4 +256,9 @@ select option {
 .page {
     margin: 5px;
     padding: 7px;
+}
+
+.logout {
+    padding-top : 10px;
+    padding-bottom: 10px;
 }

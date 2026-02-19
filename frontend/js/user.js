@@ -155,6 +155,29 @@ window.addEventListener("load", () => {
     fetchdetails();
 });
 
+async function logout() {
+    try {
+        const response = await fetch("http://localhost:3000/api/auth/logout",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include"
+        });
+        if(response.ok){
+            window.open("../home.html","_self");
+            alert("Logout successful");
+            return;
+        }
+        response.json().then(data => {
+            alert("Logout failed: " + data.message);
+        });
+    }
+     catch (error) {
+        console.error("Logout error:", error);
+     }
+}
+
 
 const canvas = document.getElementById("bgCanvas");
 const ctx = canvas.getContext("2d");
