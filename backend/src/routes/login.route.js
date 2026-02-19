@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { registerUser , loginUser } from "../controllers/login.controller.js";
+import { registerUser , loginUser , logoutUser} from "../controllers/login.controller.js";
+import { checkUser } from "../middleware/authMiddleware.js";
 
-const router = Router();
+const loginRouter = Router();
 
-router.route("/register").post(registerUser);
-router.route("/login").post(loginUser);
+loginRouter.route("/register").post(registerUser);
+loginRouter.route("/login").post(loginUser);
+loginRouter.route("/logout").post(checkUser , logoutUser);
 
-export default router;
+export default loginRouter;
