@@ -56,7 +56,7 @@ const loginUser = async (req,res) => {
         const token= generateToken(exists._id);
         res.cookie("token", token , {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite: "lax",
             maxAge: 24 * 60 * 60 * 1000
         })
@@ -73,7 +73,7 @@ const logoutUser = async (req,res) => {
     try {
         res.cookie("token", "" , {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite: "lax",
             expires: new Date(0)
         })

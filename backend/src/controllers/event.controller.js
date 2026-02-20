@@ -8,7 +8,6 @@ const createEventAdmin = async (req,res) => {
  
         const existingEvent = await Event.findOne({ eventName, startDate });
         if(existingEvent){
-            alert("Event already exists with this name and start date");
             return res.status(400).json({message: "Event already exists with this name and start date"});
         }
         const newEvent = new Event({
@@ -124,6 +123,11 @@ const deleteEvent = async(req,res) => {
             return;
         }
         const verify = await Event.findByIdAndDelete(eventId);
+        const userName = req.user.firstName;
+        if(!verify.adminUser === userName){
+            res.status(403).json({message: "You are not authorized to delete this event"});
+            return;
+        }
         if(!verify){
             res.status(404).json({message:"Event not fount"});
         }
