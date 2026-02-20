@@ -1,9 +1,10 @@
-import IORedis from "ioredis";
+import IORedis from "ioredis"
 
-const connection = new IORedis({
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT,
-   maxRetriesPerRequest: null,
+const connection = new IORedis(process.env.REDIS_URI,{
+  maxRetriesPerRequest: null,
+  enableReadyCheck: false,
+  tls: {}
 });
 
 export default connection;
+

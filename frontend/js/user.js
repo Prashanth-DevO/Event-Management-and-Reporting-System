@@ -78,9 +78,12 @@ async function register(eventid){
 }
 
 function menufunction(events){
+    result.innerHTML = "";
     eventsMenu.innerHTML = "";
+    let count =0;
     events.forEach(event =>{         
          const card = document.createElement("div");
+         count++;
          card.className="event-card";
          card.innerHTML=`
                 <h3>${event.eventName}</h3>
@@ -93,11 +96,11 @@ function menufunction(events){
          eventsMenu.appendChild(card);
 
     })
+    totalPages = Math.ceil(count / 6);
 }
 
 function updateDetails(data){
     numberOfEvents.innerHTML = data.count;
-    totalPages = Math.ceil(data.count/6);
     numberOfClubs.innerHTML = data.clubset.length;
     numberOfVenues.innerHTML = data.venueset.length;
     clubsMenu.innerHTML=` <option>All Clubs</option>`;
@@ -116,6 +119,11 @@ function updateDetails(data){
         `;
         venueName.appendChild(option2);
     })
+}
+
+function forSearchFetching(){
+    page = 1;
+    forFetching();
 }
 
 async function forFetching(){
@@ -216,10 +224,15 @@ function updateSearchResults(events) {
     for( let i=0;i<events.length;i++){
         const eventDiv = document.createElement("div");
         eventDiv.innerHTML = `
-           <h4>${events[i]}</h4>
+           <h4 onclick="searchFor('${events[i]}')">${events[i]}</h4>
         `
         result.appendChild(eventDiv);
     }
+}
+
+function searchFor(data){
+    search.value = data;
+    forSearchFetching();
 }
 
 document.addEventListener("click", (e) => {

@@ -48,22 +48,22 @@
     <div class="search-row">
         <input type="text" placeholder="Search events..." class="search-box" id="Search">
         <div id="result"></div>
-        <button class="Btn" onclick="forFetching()">Search</button>
+        <button class="Btn" onclick="forSearchFetching()">Search</button>
     </div>
 
     <div class="filter-row">
         
        
-        <select id="clubs"  onchange="forFetching()">
+        <select id="clubs"  onchange="forSearchFetching()">
             <option>All Clubs</option>
         </select>
 
        
-        <select id="venues"  onchange="forFetching()">
+        <select id="venues"  onchange="forSearchFetching()">
             <option>All Venues</option>
         </select>
 
-        <select id="sort" onchange="forFetching()">
+        <select id="sort" onchange="forSearchFetching()">
             <option>Sort-By</option>
             <option>Newest-first</option>
             <option>Oldest-first</option>
