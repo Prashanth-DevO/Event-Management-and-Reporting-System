@@ -8,7 +8,7 @@ const createEventAdmin = async (req,res) => {
  
         const existingEvent = await Event.findOne({ eventName, startDate });
         if(existingEvent){
-            return res.status(400).json({message: "Event already exists with this name and start date"});
+            return res.status(400).json({ success: false, message: "Event already exists with this name and start date" });
         }
         const newEvent = new Event({
             eventName,
@@ -24,7 +24,8 @@ const createEventAdmin = async (req,res) => {
 
     }
     catch (error) {
-        res.status(500).json({ message: "Server Error 1", error: error.message });
+        console.error("createEventAdmin error:", error);
+        res.status(500).json({ success: false, message: "Server Error" });
     }
 }
 
@@ -36,7 +37,8 @@ const eventsFetchAdmin= async (req, res) => {
 
     }
     catch (error) {
-        res.status(500).json({ message: "Server Error", error: error.message });
+        console.error("eventsFetchAdmin error:", error);
+        res.status(500).json({ success: false, message: "Server Error" });
     }
 }
 
@@ -47,7 +49,7 @@ const eventMenu= async(req,res) => {
         if(eventId){
             const event = await Event.findById(eventId);
             if(!event){
-                res.status(404).json({message: "Event not found"});
+                res.status(404).json({ success: false, message: "Event not found" });
                 return;
             }
             res.status(200).json(event);
@@ -74,10 +76,11 @@ const eventMenu= async(req,res) => {
             res.status(200).json(events);
         }
 
-     }
-     catch (error){
-        res.status(500).json({ message: "Server Error", error: error.message });
-     }
+      }
+      catch (error){
+          console.error("eventMenu error:", error);
+          res.status(500).json({ success: false, message: "Server Error" });
+      }
 }
 
 const registerEvent = async(req,res) => {
@@ -85,11 +88,11 @@ const registerEvent = async(req,res) => {
         const eventId = req.body.eventId;
         const user = req.user;
         if(!eventId){
-            res.status(400).json({message: "no eventId"})
+            res.status(400).json({ success: false, message: "Missing eventId" })
             return;
         }
         if(!user){
-            res.status(400).json({message: "No User"})
+            res.status(400).json({ success: false, message: "User not found" })
             return;
         }
         const event = await Event.findById(eventId);
@@ -97,7 +100,7 @@ const registerEvent = async(req,res) => {
             p => p.email === user.email
         );
         if(exists){
-            res.status(400).json({message: "already registerd bro!!!!!"});
+            res.status(400).json({ success: false, message: "User already registered for this event" });
             return;
         }
         event.participants.push({
@@ -111,7 +114,8 @@ const registerEvent = async(req,res) => {
         res.status(200).json({ message: "Successfully added in event List"});
     }
     catch (error){
-        res.status(500).json({ message: "Server Error from registerEvent", error: error.message });
+        console.error("registerEvent error:", error);
+        res.status(500).json({ success: false, message: "Server Error" });
     }
 }
 
@@ -119,22 +123,24 @@ const deleteEvent = async(req,res) => {
     try {
         const eventId = req.body.eventId;
         if(!eventId){
-            res.status(400).json({message: "no eventId"})
+            res.status(400).json({ success: false, message: "Missing eventId" })
             return;
         }
         const verify = await Event.findByIdAndDelete(eventId);
         const userName = req.user.firstName;
         if(!verify.adminUser === userName){
-            res.status(403).json({message: "You are not authorized to delete this event"});
+            res.status(403).json({ success: false, message: "You are not authorized to delete this event" });
             return;
         }
         if(!verify){
-            res.status(404).json({message:"Event not fount"});
+            res.status(404).json({ success: false, message: "Event not found" });
+            return;
         }
-        res.status(200).json({message: "Event deleted successfully"});
+        res.status(200).json({ message: "Event deleted successfully" });
     }
     catch (error) {
-        res.status(500).json({ message: "Server Error from deleteEvent", error: error.message });
+        console.error("deleteEvent error:", error);
+        res.status(500).json({ success: false, message: "Server Error" });
     }
 }
 
@@ -152,7 +158,8 @@ const eventMenuDetails = async(req,res) => {
         res.status(200).json({ count, clubset: Array.from(clubSet) , venueset: Array.from(venueSet) });
     }
     catch (error) {
-        res.status(500).json({ message: "Server Error from eventMenuDetails", error: error.message });
+        console.error("eventMenuDetails error:", error);
+        res.status(500).json({ success: false, message: "Server Error" });
     }
 }
 
@@ -170,7 +177,8 @@ const eventsSearch = async(req,res) => {
         res.status(200).json(result);
     }
     catch (error) {
-        res.status(500).json({ message: "Server Error from eventsSearch", error: error.message });
+        console.error("eventsSearch error:", error);
+        res.status(500).json({ success: false, message: "Server Error" });
     }
 }
 export { createEventAdmin , eventsFetchAdmin , eventMenu , registerEvent , deleteEvent , eventMenuDetails ,eventsSearch};
