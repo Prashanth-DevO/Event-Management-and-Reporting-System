@@ -80,10 +80,8 @@ async function register(eventid){
 function menufunction(events){
     result.innerHTML = "";
     eventsMenu.innerHTML = "";
-    let count =0;
     events.forEach(event =>{         
          const card = document.createElement("div");
-         count++;
          card.className="event-card";
          card.innerHTML=`
                 <h3>${event.eventName}</h3>
@@ -96,7 +94,6 @@ function menufunction(events){
          eventsMenu.appendChild(card);
 
     })
-    totalPages = Math.ceil(count / 6);
 }
 
 function updateDetails(data){
@@ -151,7 +148,8 @@ async function forFetching(){
             console.error(`Error between - frontend to get the menu ${response.status}`);
         }
         else{
-            const events = await response.json();
+            const {events, count} = await response.json();
+            totalPages = Math.ceil(count / 6);
             menufunction(events);
         }
     }

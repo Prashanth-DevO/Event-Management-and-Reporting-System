@@ -72,8 +72,9 @@ const eventMenu= async(req,res) => {
             else if(sort==="Old"){
                 data = data.sort({startDate : 1});
             }
+            const count = await Event.countDocuments(filter);
             const events =await data.skip((pageNo-1)*limit).limit(limit);
-            res.status(200).json(events);
+            res.status(200).json({events, count});
         }
 
       }
