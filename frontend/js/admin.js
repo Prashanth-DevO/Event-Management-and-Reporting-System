@@ -1,5 +1,6 @@
 const form  = document.getElementById("event-form") ;
 
+
 form.addEventListener("submit", async(e) => {
     e.preventDefault();
     const eventName = document.getElementById("event-name").value.trim();
@@ -35,7 +36,7 @@ form.addEventListener("submit", async(e) => {
             venue,
             participants:[]
         }
-        const response = await fetch("http://localhost:3000/api/events/create",{
+        const response = await fetch(`${BACKEND_URL}/api/events/create`,{
             method: "POST",
             credentials: "include",
             headers: {
@@ -79,7 +80,7 @@ function appendInToTables(events){
             <td>${startDate}</td>
             <td>${endDate}</td>
             <td>${coordinators}</td>
-            <tb>${event.venue}</td>
+            <td>${event.venue}</td>
             <td class="Buttons">
                 <button id="downloadReport" onclick="DownloadReport('${event._id}')" class="btn btn-primary">DownloadReport</button>
                 <button id="downloadParticipants" onclick="DownloadParticipants('${event._id}')" class="btn btn-primary">Participants</button>
@@ -95,7 +96,7 @@ async function DeleteEvent(eventId){
     try {
         const confirmDelete =confirm("Are you sure you want to delete this event? This action cannot be undone.");
         if(!confirmDelete) return;
-        const response = await fetch("http://localhost:3000/api/events/delete",{
+        const response = await fetch(`${BACKEND_URL}/api/events/delete`,{
             method: "DELETE",
             credentials: "include",
             headers: {
@@ -129,7 +130,7 @@ function DownloadReport(eventId){
 
 async function fetchEvents() {
     try {
-        const response = await fetch(`http://localhost:3000/api/events/fetch`, {
+        const response = await fetch(`${BACKEND_URL}/api/events/fetch`, {
             method: "GET",
             credentials: "include"
         });
@@ -149,7 +150,7 @@ async function fetchEvents() {
 
 async function logout() {
     try {
-        const response = await fetch("http://localhost:3000/api/auth/logout",{
+        const response = await fetch(`${BACKEND_URL}/api/auth/logout`,{
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

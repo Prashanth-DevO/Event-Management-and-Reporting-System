@@ -44,7 +44,7 @@ document.getElementById("loginForm").addEventListener("submit", async(e) => {
     };
 
     try {
-        const response = await fetch("http://localhost:3000/api/auth/login", {
+        const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -89,7 +89,7 @@ document.getElementById("registerForm").addEventListener("submit", async(e) => {
     };
 
     try {
-        const response = await fetch("http://localhost:3000/api/auth/register", {
+        const response = await fetch(`${BACKEND_URL}/api/auth/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",

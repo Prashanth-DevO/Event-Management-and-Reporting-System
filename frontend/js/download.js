@@ -59,7 +59,7 @@ async function fetchingData(){
          const data = {
             eventId:eventId
          }
-         const response = await fetch("http://localhost:3000/api/events/menu",{
+         const response = await fetch(`${BACKEND_URL}/api/events/menu`,{
             method:"POST",
             credentials: "include",
             headers: {

@@ -54,7 +54,7 @@ let condition = true;
 
 async function register(eventid){
     try {
-        const response =await fetch("http://localhost:3000/api/events/register",{
+        const response =await fetch(`${BACKEND_URL}/api/events/register`,{
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
@@ -138,7 +138,7 @@ async function forFetching(){
              limit: 6
         };
 
-        const response = await fetch("http://localhost:3000/api/events/menu",{
+        const response = await fetch(`${BACKEND_URL}/api/events/menu`,{
             method: "POST",
             headers:{
                 "Content-Type":"application/json"
@@ -162,7 +162,7 @@ async function forFetching(){
 
 async function fetchdetails(){
     try {
-        const response = await fetch("http://localhost:3000/api/events/menu/details");
+        const response = await fetch(`${BACKEND_URL}/api/events/menu/details`);
 
         if(!response.ok){
             console.error(`Error between - frontend to get the menu ${response.status}`);
@@ -182,7 +182,7 @@ window.addEventListener("load", () => {
 
 async function logout() {
     try {
-        const response = await fetch("http://localhost:3000/api/auth/logout",{
+        const response = await fetch(`${BACKEND_URL}/api/auth/logout`,{
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -243,7 +243,7 @@ document.addEventListener("click", (e) => {
 
 async function fetchSearch(value) {
     try {
-        const response = await fetch("http://localhost:3000/api/events/search",{
+        const response = await fetch(`${BACKEND_URL}/api/events/search`,{
             method: "POST",
             headers:{
                 "Content-Type":"application/json"
