@@ -1,6 +1,4 @@
 import { addEmailJob } from "../util/email.queue.js";
-import { Event } from "../models/event.model.js";
-
 
 const eventRegistrationEmail = async(user,event) => {
     try {

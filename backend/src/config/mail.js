@@ -1,13 +1,12 @@
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true, // for ssl (465)   , it is false for tls (587)
+  host: "smtp.sendgrid.net",
+  port: 587,
+  secure: false, // TLS
   auth: {
-    user: process.env.EMAIL_USER, 
-    pass: process.env.EMAIL_PASS 
+    user: "apikey", // literally the word "apikey"
+    pass: process.env.EMAIL_API,
   },
 });
 
