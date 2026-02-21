@@ -158,7 +158,7 @@ async function logout() {
             credentials: "include"
         });
         if(response.ok){
-            window.open("../home.html","_self");
+            window.open("../index.html","_self");
             alert("Logout successful");
             return;
         }
