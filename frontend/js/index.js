@@ -4,6 +4,7 @@ const signUpForm = document.getElementById("signup");
 
 const registerRole = document.getElementById("registerRole");
 const loginRole = document.getElementById("loginRole");
+const responseDiv = document.getElementById("response");
 
 
 document.getElementById("userLoginBtn").onclick = () => openLogin("participant");
@@ -34,6 +35,7 @@ function openRegister(role) {
 
 document.getElementById("loginForm").addEventListener("submit", async(e) => {
     e.preventDefault();
+    responseDiv.innerHTML = "Processing login...";
     const form = document.getElementById("loginForm");
     const role = loginRole.value;
     const data = new FormData(form);
@@ -52,6 +54,7 @@ document.getElementById("loginForm").addEventListener("submit", async(e) => {
         });
         console.log("Login response status:", response.status);
         if (response.ok) {
+            responseDiv.innerHTML = "";
             const result = await response.json();
             console.log("Login result:", result);
             if (role === "participant") {
@@ -61,6 +64,7 @@ document.getElementById("loginForm").addEventListener("submit", async(e) => {
             }
         }
         else {
+            responseDiv.innerHTML = "Failed to login.";
             const errorResult = await response.json();
             alert("Login failed: " + (errorResult.message || response.statusText));
         }
@@ -75,7 +79,7 @@ document.getElementById("loginForm").addEventListener("submit", async(e) => {
 
 document.getElementById("registerForm").addEventListener("submit", async(e) => {
     e.preventDefault();
-
+    responseDiv.innerHTML = "Processing registration...";
     const role = registerRole.value;
     const form = document.getElementById("registerForm");
     const data = new FormData(form);
@@ -99,12 +103,14 @@ document.getElementById("registerForm").addEventListener("submit", async(e) => {
         console.log("Register response status:", response.status);
         console.log("Register result:", result);
         if (response.ok) {
+            responseDiv.innerHTML = "";
             if (role === "participant") {
                 window.location.href = "pages/user.html";
             } else if (role === "admin") {
                 window.location.href = "pages/admin.html";
             }
         } else {
+            responseDiv.innerHTML = "Failed to register.";
             alert("Registration failed: " + result.message);
         }
     }

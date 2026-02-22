@@ -164,3 +164,10 @@ footer {
     height: 100%;
     z-index: -1;
 }
+
+#response {
+  font-size: 20px;
+  text-align: center;
+  font-weight: 500;
+  color: hsl(0, 0%, 100%);
+}
