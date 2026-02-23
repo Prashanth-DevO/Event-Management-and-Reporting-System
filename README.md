@@ -22,7 +22,7 @@ A full-stack web application for managing campus/club events with role-based acc
 - **Password Hash:** bcrypt
 - **Queue System:** BullMQ + ioredis
 - **Email:** Nodemailer (Gmail SMTP)
-- **CORS:** Configured for localhost:5500
+- **CORS:** Configured via `FRONTEND_URL` environment variable
 
 ### Frontend
 - **HTML/CSS/JavaScript** (vanilla, no build tool)
@@ -43,6 +43,7 @@ Event Management and Reporting System/
 │   │   ├── app.js                   # Express app setup
 │   │   ├── config/
 │   │   │   ├── database.js          # MongoDB connection
+│   │   │   ├── env.js               # Environment configuration
 │   │   │   ├── mail.js              # Nodemailer transporter
 │   │   │   └── redis.js             # Redis connection
 │   │   ├── controllers/
@@ -66,25 +67,26 @@ Event Management and Reporting System/
 │   │       └── jwt.js               # JWT sign/verify
 │   └── .gitignore
 ├── frontend/
-│   ├── home.html                    # Login/Register page
+│   ├── index.html                   # Login/Register landing page
 │   ├── assets/images/               # Static images
 │   ├── css/
-│   │   ├── home.css
-│   │   ├── admin.css
-│   │   ├── user.css                 # Includes search styles
-│   │   ├── participants.css
-│   │   └── download.css
+│   │   ├── index.css                # Landing page styles
+│   │   ├── admin.css                # Admin dashboard styles
+│   │   ├── user.css                 # User page + search styles
+│   │   ├── participants.css         # Participants page styles
+│   │   └── download.css             # Download report styles
 │   ├── js/
-│   │   ├── home.js                  # Auth logic
+│   │   ├── config.js                # Backend URL configuration
+│   │   ├── index.js                 # Auth logic (login/register)
 │   │   ├── admin.js                 # Admin dashboard
 │   │   ├── user.js                  # Event browsing + debounced search
 │   │   ├── participants.js          # Participant list
 │   │   └── download.js              # Report download
 │   └── pages/
-│       ├── admin.html
-│       ├── user.html
-│       ├── participants.html
-│       └── download.html
+│       ├── admin.html               # Admin dashboard page
+│       ├── user.html                # User events page
+│       ├── participants.html        # Participants management page
+│       └── download.html            # Report download page
 └── README.md
 ```
 
@@ -113,12 +115,15 @@ MONGODB_URI=mongodb://localhost:27017/eventflow
 SECRETE=your_jwt_secret_key
 EMAIL_USER=your_gmail@gmail.com
 EMAIL_PASS=your_gmail_app_password
-PORT=3000
+FRONTEND_URL=http://localhost:5500
+PORT=4000
 ```
 
 **Notes:**
 - `SECRETE` is the JWT signing secret (typo preserved from original code)
 - `EMAIL_PASS` is a Gmail App Password (not your account password)
+- `FRONTEND_URL` is used for CORS configuration
+- `PORT` defaults to 4000 if not specified
 - Redis must be running locally on port 6379
 
 #### 3. Start the backend
@@ -128,7 +133,7 @@ npm run dev     # With auto-reload (nodemon)
 npm start       # Standard start
 ```
 
-Server runs on `http://localhost:3000`
+Server runs on `http://localhost:4000` (or PORT from .env)
 
 ---
 
@@ -138,8 +143,8 @@ The frontend is a static site served from the `frontend/` folder.
 
 #### Option 1: VS Code Live Server
 1. Install the "Live Server" extension in VS Code
-2. Right-click `frontend/home.html` → "Open with Live Server"
-3. Opens at `http://localhost:5500` (default)
+2. Right-click `frontend/index.html` → "Open with Live Server"
+3. Opens at `http://localhost:5500` (default port)
 
 #### Option 2: Python HTTP Server
 ```bash
@@ -158,7 +163,8 @@ http-server -p 5500
 
 ## API Reference
 
-**Base URL:** `http://localhost:3000`
+**Base URL:** `http://localhost:4000` (or configured PORT)
+**Production Base URL:** `https://event-management-and-reporting-system.onrender.com`
 
 ### Authentication Endpoints
 
@@ -292,14 +298,35 @@ http-server -p 5500
 - Workers process jobs asynchronously
 ---
 
-## Known Issue & Notes
-
+### Known Issue & Notes
 
 ### Other Notes
 - Frontend role selection is UI-only; backend doesn't enforce role-specific routes
 - Participant lists and reports use browser `window.print()`, not PDF generation
-- CORS is restricted to `http://localhost:5500`
-- All API URLs in frontend are hardcoded to `http://localhost:3000`
+- CORS is configured via `FRONTEND_URL` environment variable
+- All frontend API URLs are configured in `frontend/js/config.js`
+
+---
+
+## Deployment
+
+### Production Deployment
+- **Frontend:** Deployed on Vercel  
+  Live Server: [http://event-management-and-reporting-syst.vercel.app/](http://event-management-and-reporting-syst.vercel.app/)
+
+- **Backend:** Deployed on Render  
+  API Base URL: `https://event-management-and-reporting-system.onrender.com`
+
+### Environment Variables for Production
+Update `.env` with production URLs:
+```env
+FRONTEND_URL=https://event-management-and-reporting-syst.vercel.app
+MONGODB_URI=your_production_mongodb_uri
+SECRETE=your_jwt_secret_key
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_app_password
+PORT=4000
+```
 
 ---
 
@@ -335,9 +362,10 @@ Then open: `http://localhost:5500`
 ## Troubleshooting
 
 ### Frontend won't connect to backend
-- Ensure backend runs on port 3000
-- Check CORS origin is set to `http://localhost:5500`
-- Verify credentials: `include` in fetch options
+- Ensure backend runs on configured PORT (default 4000)
+- Check `FRONTEND_URL` in backend `.env` matches frontend origin
+- Verify CORS `credentials: true` in fetch requests
+- Check `BACKEND_URL` in `frontend/js/config.js` matches backend URL
 
 ### Emails not sending
 - Check Gmail app password in `.env` (use 16-char app password, not account password)
