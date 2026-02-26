@@ -11,11 +11,15 @@ A full-stack web application for managing campus/club events with role-based acc
 
 ### Video Demos
 
-**Demo 1:**
-https://github.com/Prashanth-DevO/Event-Management-and-Reporting-System/assets/assetsReadme/Screencast%20from%202026-02-26%2022-39-22.mp4
+**Demo 1**
 
-**Demo 2:**
-https://github.com/Prashanth-DevO/Event-Management-and-Reporting-System/assets/assetsReadme/Screencast%20from%202026-02-26%2022-43-14.mp4
+![Demo 1](assetsReadme/demo1.gif)
+
+
+**Demo 2**
+
+![Demo 2](assetsReadme/demo2.gif)
+
 
 ---
 
