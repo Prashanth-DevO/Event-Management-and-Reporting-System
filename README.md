@@ -2,6 +2,23 @@
 
 A full-stack web application for managing campus/club events with role-based access, event registration, and automated email notifications.
 
+---
+
+## 🎬 Demo & Screenshots
+
+### Screenshots
+![Project Screenshot](assetsReadme/Screenshot%20from%202026-02-26%2022-36-15.png)
+
+### Video Demos
+
+**Demo 1:**
+<video src="assetsReadme/Screencast from 2026-02-26 22-39-22.mp4" width="100%" controls autoplay loop></video>
+
+**Demo 2:**
+<video src="assetsReadme/Screencast from 2026-02-26 22-43-14.mp4" width="100%" controls autoplay loop></video>
+
+---
+
 **Features:**
 - 🔐 User authentication (Admin & Participant roles)
 - 📅 Event creation, filtering, and search with debounce
@@ -313,9 +330,7 @@ http-server -p 5500
 ### Production Deployment
 - **Frontend:** Deployed on Vercel  
   Live Server: [http://event-management-and-reporting-syst.vercel.app/](http://event-management-and-reporting-syst.vercel.app/)
-
-- **Backend:** Deployed on Render  
-  API Base URL: `https://event-management-and-reporting-system.onrender.com`
+  
 
 ### Environment Variables for Production
 Update `.env` with production URLs:
