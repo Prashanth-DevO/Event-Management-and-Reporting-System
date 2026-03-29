@@ -66,10 +66,10 @@ const eventMenu= async(req,res) => {
                 filter.eventName ={ $regex :search , $options: "i" };
             }
             let data = Event.find(filter);
-            if(sort==="New"){
+            if(sort==="Newest-first"){
                 data = data.sort({startDate:-1});
             }
-            else if(sort==="Old"){
+            else if(sort==="Oldest-first"){
                 data = data.sort({startDate : 1});
             }
             const count = await Event.countDocuments(filter);
