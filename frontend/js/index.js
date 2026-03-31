@@ -32,6 +32,39 @@ function openRegister(role) {
     registerRole.value = role;
 }
 
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function validatePassword(password) {
+    if (password.length < 8) {
+        return "Password must be at least 8 characters.";
+    }
+
+    if (!/[A-Z]/.test(password)) {
+        return "Password must contain at least one uppercase letter.";
+    }
+
+    if (!/[a-z]/.test(password)) {
+        return "Password must contain at least one lowercase letter.";
+    }
+
+    if (!/[0-9]/.test(password)) {
+        return "Password must contain at least one number.";
+    }
+
+    return "";
+}
+
+function validateCredentials(email, password) {
+    if (!validateEmail(email)) {
+        return "Please enter a valid email address.";
+    }
+
+    return validatePassword(password);
+}
+
 
 document.getElementById("loginForm").addEventListener("submit", async(e) => {
     e.preventDefault();
@@ -41,9 +74,16 @@ document.getElementById("loginForm").addEventListener("submit", async(e) => {
     const data = new FormData(form);
 
     const formDetails = {
-        email: data.get("email"),
-        password: data.get("password")
+        email: (data.get("email") || "").trim(),
+        password: (data.get("password") || "").trim()
     };
+
+    const loginValidationError = validateCredentials(formDetails.email, formDetails.password);
+    if (loginValidationError) {
+        responseDiv.innerHTML = "";
+        alert(loginValidationError);
+        return;
+    }
 
     try {
         const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
@@ -88,9 +128,16 @@ document.getElementById("registerForm").addEventListener("submit", async(e) => {
         registerRole: role,
         firstName: data.get("firstName"),
         lastName: data.get("lastName"),
-        email: data.get("email"),
-        password: data.get("password")
+        email: (data.get("email") || "").trim(),
+        password: (data.get("password") || "").trim()
     };
+
+    const registerValidationError = validateCredentials(formDetails.email, formDetails.password);
+    if (registerValidationError) {
+        responseDiv.innerHTML = "";
+        alert(registerValidationError);
+        return;
+    }
 
     try {
         const response = await fetch(`${BACKEND_URL}/api/auth/register`, {
