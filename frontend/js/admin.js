@@ -12,8 +12,9 @@ form.addEventListener("submit", async(e) => {
     const coord1_num = document.getElementById("coordinator1_number").value.trim();
     const coord2_num = document.getElementById("coordinator2_number").value.trim();
     const venue = document.getElementById("venueName").value.trim();
+    const price = Number(document.getElementById("price").value);
 
-    if (!eventName || !club || !start || !end || !venue ) {
+    if (!eventName || !club || !start || !end || !venue || Number.isNaN(price) || price < 0) {
         alert("Fill all fields");
         return;
     }
@@ -34,6 +35,7 @@ form.addEventListener("submit", async(e) => {
                 }
             ],
             venue,
+            price,
             participants:[]
         }
         const response = await fetch(`${BACKEND_URL}/api/events/create`,{
@@ -79,6 +81,7 @@ function appendInToTables(events){
             <td>${event.clubName}</td>
             <td>${startDate}</td>
             <td>${endDate}</td>
+            <td>₹${event.price || 0}</td>
             <td>${coordinators}</td>
             <td>${event.venue}</td>
             <td class="Buttons">

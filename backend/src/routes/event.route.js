@@ -1,4 +1,4 @@
-import { createEventAdmin , eventsFetchAdmin , eventMenu ,registerEvent , deleteEvent , eventMenuDetails , eventsSearch} from "../controllers/event.controller.js";
+import { createEventAdmin , eventsFetchAdmin , eventMenu ,registerEvent , createPaymentOrder, verifyPaymentAndRegister, deleteEvent , eventMenuDetails , eventsSearch} from "../controllers/event.controller.js";
 import { Router } from "express";
 import { checkUser } from "../middleware/authMiddleware.js";
 
@@ -11,6 +11,8 @@ eventRouter.route("/menu").post(eventMenu);
 eventRouter.route("/menu/details").get(eventMenuDetails);
 eventRouter.route("/search").post(eventsSearch);
 eventRouter.route("/register").post(checkUser,registerEvent);
+eventRouter.route("/payment/order").post(checkUser, createPaymentOrder);
+eventRouter.route("/payment/verify").post(checkUser, verifyPaymentAndRegister);
 
 
 export default eventRouter;

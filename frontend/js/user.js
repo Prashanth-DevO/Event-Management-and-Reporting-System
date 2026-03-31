@@ -52,28 +52,127 @@ function formatDate(dateString) {
 
 let condition = true;
 
+async function fetchEventById(eventId) {
+    const response = await fetch(`${BACKEND_URL}/api/events/menu`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ eventId })
+    });
+
+    if (!response.ok) {
+        throw new Error("Unable to fetch event details");
+    }
+
+    return response.json();
+}
+
+async function registerFree(eventId) {
+    const response = await fetch(`${BACKEND_URL}/api/events/register`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({ eventId })
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.message || "Failed to register to the event");
+    }
+
+    return data;
+}
+
 async function register(eventid){
     try {
-        const response =await fetch(`${BACKEND_URL}/api/events/register`,{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            credentials:"include",
-            body: JSON.stringify({ eventId: eventid })
-        })
-        const data =await response.json();
-        if(response.ok){
+        const event = await fetchEventById(eventid);
+        const eventPrice = Number(event.price || 0);
+
+        if (eventPrice <= 0) {
+            const data = await registerFree(eventid);
             alert("Your registration is confirmed");
             alert(data.message);
+            return;
         }
-        else{
-            alert("Failed to register to the event");
+
+        const orderResponse = await fetch(`${BACKEND_URL}/api/events/payment/order`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({ eventId: eventid })
+        });
+
+        const orderData = await orderResponse.json();
+        if (!orderResponse.ok) {
+            throw new Error(orderData.message || "Failed to start payment");
+        }
+
+        if (!orderData.requiresPayment) {
+            const data = await registerFree(eventid);
+            alert("Your registration is confirmed");
             alert(data.message);
+            return;
         }
+
+        const options = {
+            key: orderData.key,
+            amount: orderData.amount,
+            currency: orderData.currency,
+            name: "EventFlow",
+            description: `Registration for ${orderData.eventName}`,
+            order_id: orderData.orderId,
+            handler: async function (response) {
+                try {
+                    const verifyResponse = await fetch(`${BACKEND_URL}/api/events/payment/verify`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        credentials: "include",
+                        body: JSON.stringify({
+                            eventId: eventid,
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature
+                        })
+                    });
+
+                    const verifyData = await verifyResponse.json();
+                    if (!verifyResponse.ok) {
+                        throw new Error(verifyData.message || "Payment verification failed");
+                    }
+
+                    alert("Your registration is confirmed");
+                    alert(verifyData.message);
+                }
+                catch (verifyError) {
+                    console.error("Payment verification error:", verifyError);
+                    alert(verifyError.message || "Payment verification failed");
+                }
+            },
+            prefill: {
+                name: orderData.userName,
+                email: orderData.userEmail
+            },
+            theme: {
+                color: "#3399cc"
+            }
+        };
+
+        const razorpayCheckout = new Razorpay(options);
+        razorpayCheckout.on("payment.failed", function () {
+            alert("Payment failed. Please try again.");
+        });
+        razorpayCheckout.open();
     }
     catch(error) {
          console.error("Frontend register error:", error);
+         alert(error.message || "Failed to register to the event");
     }
 }
 
@@ -88,6 +187,7 @@ function menufunction(events){
                 <p><strong>Club:</strong> ${event.clubName}</p>
                 <p><strong>Venue:</strong> ${event.venue}</p>
                 <p><strong>Date:</strong> ${formatDate(event.startDate)}</p>
+                  <p><strong>Price:</strong> ₹${event.price || 0}</p>
                 <button class="register-btn" onclick="register('${event._id}')">Register</button>
          `;
 

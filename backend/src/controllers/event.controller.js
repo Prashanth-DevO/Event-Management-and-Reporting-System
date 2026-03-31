@@ -1,10 +1,33 @@
 import { Event } from "../models/event.model.js";
 import { eventRegistrationEmail } from "../services/email.service.js";
+import Razorpay from "razorpay";
+import crypto from "crypto";
+
+const razorpay = new Razorpay({
+    key_id: process.env.razorpay_key_id,
+    key_secret: process.env.razorpay_key_secret
+});
+
+const addParticipantToEvent = async (event, user, paymentStatus) => {
+    event.participants.push({
+        name: user.firstName,
+        email: user.email,
+        payment: paymentStatus
+    });
+
+    await event.save();
+    await eventRegistrationEmail(user, event);
+};
 
 const createEventAdmin = async (req,res) => {
     try {
-        const { eventName, clubName, startDate, endDate, coordinator, venue } = req.body;
+        const { eventName, clubName, startDate, endDate, coordinator, venue, price } = req.body;
         const user = req.user;
+        const eventPrice = Number(price || 0);
+
+        if (Number.isNaN(eventPrice) || eventPrice < 0) {
+            return res.status(400).json({ success: false, message: "Invalid event price" });
+        }
  
         const existingEvent = await Event.findOne({ eventName, startDate });
         if(existingEvent){
@@ -17,7 +40,8 @@ const createEventAdmin = async (req,res) => {
             endDate,
             coordinator,
             adminUser:user.firstName,
-            venue
+            venue,
+            price: eventPrice
         })
         await newEvent.save();
         res.status(201).json({message: "Event created successfully"});
@@ -97,6 +121,10 @@ const registerEvent = async(req,res) => {
             return;
         }
         const event = await Event.findById(eventId);
+        if (!event) {
+            res.status(404).json({ success: false, message: "Event not found" });
+            return;
+        }
         const exists = event.participants.find(
             p => p.email === user.email
         );
@@ -104,14 +132,12 @@ const registerEvent = async(req,res) => {
             res.status(400).json({ success: false, message: "User already registered for this event" });
             return;
         }
-        event.participants.push({
-            name:user.firstName,
-            email:user.email,
-            payment:"unpaid"
-        })
 
-        await event.save();
-        await eventRegistrationEmail(user , event);
+        if ((event.price || 0) > 0) {
+            return res.status(400).json({ success: false, message: "Payment required for this event" });
+        }
+
+        await addParticipantToEvent(event, user, "paid");
         res.status(200).json({ message: "Successfully added in event List"});
     }
     catch (error){
@@ -119,6 +145,93 @@ const registerEvent = async(req,res) => {
         res.status(500).json({ success: false, message: "Server Error" });
     }
 }
+
+const createPaymentOrder = async (req, res) => {
+    try {
+        const { eventId } = req.body;
+        const user = req.user;
+
+        if (!eventId) {
+            return res.status(400).json({ success: false, message: "Missing eventId" });
+        }
+
+        const event = await Event.findById(eventId);
+        if (!event) {
+            return res.status(404).json({ success: false, message: "Event not found" });
+        }
+
+        const alreadyRegistered = event.participants.find((participant) => participant.email === user.email);
+        if (alreadyRegistered) {
+            return res.status(400).json({ success: false, message: "User already registered for this event" });
+        }
+
+        const eventPrice = Number(event.price || 0);
+        if (eventPrice <= 0) {
+            return res.status(200).json({ success: true, requiresPayment: false });
+        }
+
+        const amount = Math.round(eventPrice * 100);
+        const order = await razorpay.orders.create({
+            amount,
+            currency: "INR",
+            receipt: `event_${event._id}_${Date.now()}`
+        });
+
+        return res.status(200).json({
+            success: true,
+            requiresPayment: true,
+            key: process.env.razorpay_key_id,
+            amount,
+            currency: "INR",
+            orderId: order.id,
+            eventName: event.eventName,
+            userName: user.firstName,
+            userEmail: user.email
+        });
+    }
+    catch (error) {
+        console.error("createPaymentOrder error:", error);
+        return res.status(500).json({ success: false, message: "Server Error" });
+    }
+};
+
+const verifyPaymentAndRegister = async (req, res) => {
+    try {
+        const { eventId, razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+        const user = req.user;
+
+        if (!eventId || !razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+            return res.status(400).json({ success: false, message: "Missing payment details" });
+        }
+
+        const event = await Event.findById(eventId);
+        if (!event) {
+            return res.status(404).json({ success: false, message: "Event not found" });
+        }
+
+        const alreadyRegistered = event.participants.find((participant) => participant.email === user.email);
+        if (alreadyRegistered) {
+            return res.status(400).json({ success: false, message: "User already registered for this event" });
+        }
+
+        const generatedSignature = crypto
+            .createHmac("sha256", process.env.razorpay_key_secret)
+            .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+            .digest("hex");
+
+        if (generatedSignature !== razorpay_signature) {
+            return res.status(400).json({ success: false, message: "Payment verification failed" });
+        }
+
+        await addParticipantToEvent(event, user, "paid");
+
+        return res.status(200).json({ success: true, message: "Payment successful and registration confirmed" });
+    }
+    catch (error) {
+        console.error("verifyPaymentAndRegister error:", error);
+        return res.status(500).json({ success: false, message: "Server Error" });
+    }
+};
 
 const deleteEvent = async(req,res) => {
     try {
@@ -182,4 +295,4 @@ const eventsSearch = async(req,res) => {
         res.status(500).json({ success: false, message: "Server Error" });
     }
 }
-export { createEventAdmin , eventsFetchAdmin , eventMenu , registerEvent , deleteEvent , eventMenuDetails ,eventsSearch};
+export { createEventAdmin , eventsFetchAdmin , eventMenu , registerEvent , createPaymentOrder, verifyPaymentAndRegister, deleteEvent , eventMenuDetails ,eventsSearch};

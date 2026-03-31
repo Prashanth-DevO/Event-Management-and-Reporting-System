@@ -7,6 +7,7 @@ const clubName2 = document.getElementById("clubName2");
 const venue1  = document.getElementById("venue1");
 const venue2  = document.getElementById("venue2");
 const date = document.getElementById("date");
+const price = document.getElementById("price");
 const totalParticipants1 = document.getElementById("totalParticipants1");
 const totalParticipants2 = document.getElementById("totalParticipants2");
 const coordinators = document.getElementById("coordinators");
@@ -33,6 +34,7 @@ function listTheData(event) {
     venue2.innerHTML = event.venue;
 
     date.innerHTML = `<strong>Date:</strong> ${new Date(event.startDate).toLocaleDateString()}`;
+    price.innerHTML = `<strong>Price:</strong> ₹${event.price || 0}`;
 
     const count = event.participants?.length || 0;
 
