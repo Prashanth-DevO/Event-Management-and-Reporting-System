@@ -159,14 +159,21 @@ async function register(eventid){
                 name: orderData.userName,
                 email: orderData.userEmail
             },
+            retry: {
+                enabled: true,
+                max_count: 2
+            },
             theme: {
                 color: "#3399cc"
             }
         };
 
         const razorpayCheckout = new Razorpay(options);
-        razorpayCheckout.on("payment.failed", function () {
-            alert("Payment failed. Please try again.");
+        razorpayCheckout.on("payment.failed", function (response) {
+            const paymentError = response?.error || {};
+            const errorMessage = paymentError.description || paymentError.reason || paymentError.code || "Please try again.";
+            console.error("Razorpay payment failed:", paymentError);
+            alert(`Payment failed: ${errorMessage}`);
         });
         razorpayCheckout.open();
     }
