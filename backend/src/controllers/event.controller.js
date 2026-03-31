@@ -171,10 +171,11 @@ const createPaymentOrder = async (req, res) => {
         }
 
         const amount = Math.round(eventPrice * 100);
+        const receipt = `ev_${String(event._id).slice(-10)}_${Date.now().toString().slice(-8)}`;
         const order = await razorpay.orders.create({
             amount,
             currency: "INR",
-            receipt: `event_${event._id}_${Date.now()}`
+            receipt
         });
 
         return res.status(200).json({
