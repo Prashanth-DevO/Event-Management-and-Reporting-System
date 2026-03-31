@@ -5,6 +5,57 @@ const signUpForm = document.getElementById("signup");
 const registerRole = document.getElementById("registerRole");
 const loginRole = document.getElementById("loginRole");
 const responseDiv = document.getElementById("response");
+const registerEmailInput = document.getElementById("registerEmail");
+const registerPasswordInput = document.getElementById("registerPassword");
+const registerEmailMessage = document.getElementById("registerEmailMessage");
+const registerPasswordMessage = document.getElementById("registerPasswordMessage");
+
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(String(email).toLowerCase());
+}
+
+function validatePassword(password) {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+    return passwordRegex.test(password);
+}
+
+function getAuthValidationError(email, password) {
+    if (!validateEmail(email)) {
+        return "Please enter a valid email address.";
+    }
+    if (!validatePassword(password)) {
+        return "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
+    }
+    return "";
+}
+
+function updateRegisterValidationMessages() {
+    if (registerEmailInput.value.trim() === "") {
+        registerEmailMessage.textContent = "";
+        registerEmailMessage.classList.remove("valid");
+    } else if (validateEmail(registerEmailInput.value.trim())) {
+        registerEmailMessage.textContent = "Valid email format.";
+        registerEmailMessage.classList.add("valid");
+    } else {
+        registerEmailMessage.textContent = "Please enter a valid email address.";
+        registerEmailMessage.classList.remove("valid");
+    }
+
+    if (registerPasswordInput.value === "") {
+        registerPasswordMessage.textContent = "";
+        registerPasswordMessage.classList.remove("valid");
+    } else if (validatePassword(registerPasswordInput.value)) {
+        registerPasswordMessage.textContent = "Strong password.";
+        registerPasswordMessage.classList.add("valid");
+    } else {
+        registerPasswordMessage.textContent = "Min 8 chars with uppercase, lowercase, number, special char.";
+        registerPasswordMessage.classList.remove("valid");
+    }
+}
+
+registerEmailInput.addEventListener("input", updateRegisterValidationMessages);
+registerPasswordInput.addEventListener("input", updateRegisterValidationMessages);
 
 
 document.getElementById("userLoginBtn").onclick = () => openLogin("participant");
@@ -32,40 +83,6 @@ function openRegister(role) {
     registerRole.value = role;
 }
 
-function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-function validatePassword(password) {
-    if (password.length < 8) {
-        return "Password must be at least 8 characters.";
-    }
-
-    if (!/[A-Z]/.test(password)) {
-        return "Password must contain at least one uppercase letter.";
-    }
-
-    if (!/[a-z]/.test(password)) {
-        return "Password must contain at least one lowercase letter.";
-    }
-
-    if (!/[0-9]/.test(password)) {
-        return "Password must contain at least one number.";
-    }
-
-    return "";
-}
-
-function validateCredentials(email, password) {
-    if (!validateEmail(email)) {
-        return "Please enter a valid email address.";
-    }
-
-    return validatePassword(password);
-}
-
-
 document.getElementById("loginForm").addEventListener("submit", async(e) => {
     e.preventDefault();
     responseDiv.innerHTML = "Processing login...";
@@ -74,16 +91,9 @@ document.getElementById("loginForm").addEventListener("submit", async(e) => {
     const data = new FormData(form);
 
     const formDetails = {
-        email: (data.get("email") || "").trim(),
-        password: (data.get("password") || "").trim()
+        email: data.get("email"),
+        password: data.get("password")
     };
-
-    const loginValidationError = validateCredentials(formDetails.email, formDetails.password);
-    if (loginValidationError) {
-        responseDiv.innerHTML = "";
-        alert(loginValidationError);
-        return;
-    }
 
     try {
         const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
@@ -128,13 +138,13 @@ document.getElementById("registerForm").addEventListener("submit", async(e) => {
         registerRole: role,
         firstName: data.get("firstName"),
         lastName: data.get("lastName"),
-        email: (data.get("email") || "").trim(),
-        password: (data.get("password") || "").trim()
+        email: data.get("email"),
+        password: data.get("password")
     };
 
-    const registerValidationError = validateCredentials(formDetails.email, formDetails.password);
+    const registerValidationError = getAuthValidationError(formDetails.email, formDetails.password);
     if (registerValidationError) {
-        responseDiv.innerHTML = "";
+        responseDiv.innerHTML = registerValidationError;
         alert(registerValidationError);
         return;
     }
