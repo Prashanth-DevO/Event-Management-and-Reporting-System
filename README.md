@@ -4,7 +4,7 @@ A full-stack web application for managing campus/club events with role-based acc
 
 ---
 
-## 🎬 Demo & Screenshots
+## Demo & Screenshots
 
 ### Screenshots
 ![Project Screenshot](assetsReadme/Screenshot%20from%202026-02-26%2022-36-15.png)
@@ -24,13 +24,14 @@ A full-stack web application for managing campus/club events with role-based acc
 ---
 
 **Features:**
-- 🔐 User authentication (Admin & Participant roles)
-- 📅 Event creation, filtering, and search with debounce
-- 👥 Event registration and participant management
-- 📧 Automated email notifications (welcome, registration confirmation, event reminders)
-- 🎨 Modern glassmorphic UI with particle animations
-- 📱 Responsive design
-- 🖨️ Printable participant lists and event reports
+- User authentication (Admin & Participant roles)
+- Event creation, filtering, and search with debounce
+- Event registration and participant management
+- Paid and free event support with Razorpay payment verification
+- Automated email notifications (welcome, registration confirmation, event reminders)
+- Modern glassmorphic UI with particle animations
+- Responsive design
+- Printable participant lists and event reports
 
 ---
 
@@ -43,6 +44,7 @@ A full-stack web application for managing campus/club events with role-based acc
 - **Password Hash:** bcrypt
 - **Queue System:** BullMQ + ioredis
 - **Email:** Nodemailer (Gmail SMTP)
+- **Payments:** Razorpay (order creation + signature verification)
 - **CORS:** Configured via `FRONTEND_URL` environment variable
 
 ### Frontend
@@ -136,6 +138,8 @@ MONGODB_URI=mongodb://localhost:27017/eventflow
 SECRETE=your_jwt_secret_key
 EMAIL_USER=your_gmail@gmail.com
 EMAIL_PASS=your_gmail_app_password
+razorpay_key_id=your_razorpay_key_id
+razorpay_key_secret=your_razorpay_key_secret
 FRONTEND_URL=http://localhost:5500
 PORT=4000
 ```
@@ -143,6 +147,7 @@ PORT=4000
 **Notes:**
 - `SECRETE` is the JWT signing secret (typo preserved from original code)
 - `EMAIL_PASS` is a Gmail App Password (not your account password)
+- `razorpay_key_id` and `razorpay_key_secret` are required for paid event registration
 - `FRONTEND_URL` is used for CORS configuration
 - `PORT` defaults to 4000 if not specified
 - Redis must be running locally on port 6379
@@ -191,9 +196,9 @@ http-server -p 5500
 
 | Method | Endpoint | Protected | Description |
 |--------|----------|-----------|-------------|
-| POST | `/api/auth/register` | ❌ | Register new user |
-| POST | `/api/auth/login` | ❌ | Login user |
-| POST | `/api/auth/logout` | ✅ | Logout (clears token) |
+| POST | `/api/auth/register` | No | Register new user |
+| POST | `/api/auth/login` | No | Login user |
+| POST | `/api/auth/logout` | Yes | Logout (clears token) |
 
 **Register/Login Body:**
 ```json
@@ -212,13 +217,15 @@ http-server -p 5500
 
 | Method | Endpoint | Protected | Description |
 |--------|----------|-----------|-------------|
-| POST | `/api/events/create` | ✅ | Create event (admin) |
-| DELETE | `/api/events/delete` | ✅ | Delete event |
-| GET | `/api/events/fetch` | ✅ | Get user's events |
-| POST | `/api/events/menu` | ❌ | List events with filters |
-| GET | `/api/events/menu/details` | ❌ | Get event stats (count/clubs/venues) |
-| POST | `/api/events/search` | ❌ | Search event name suggestions |
-| POST | `/api/events/register` | ✅ | Register for event |
+| POST | `/api/events/create` | Yes | Create event (admin) |
+| DELETE | `/api/events/delete` | Yes | Delete event |
+| GET | `/api/events/fetch` | Yes | Get user's events |
+| POST | `/api/events/menu` | No | List events with filters or fetch event by ID |
+| GET | `/api/events/menu/details` | No | Get event stats (count/clubs/venues) |
+| POST | `/api/events/search` | No | Search event name suggestions |
+| POST | `/api/events/register` | Yes | Register for free event |
+| POST | `/api/events/payment/order` | Yes | Create Razorpay order for paid event |
+| POST | `/api/events/payment/verify` | Yes | Verify payment signature and complete registration |
 
 **Create Event Body:**
 ```json
@@ -230,7 +237,8 @@ http-server -p 5500
   "coordinator": [
     { "name": "Alice", "contactNumber": "9876543210" }
   ],
-  "venue": "Auditorium"
+  "venue": "Auditorium",
+  "price": 299
 }
 ```
 
@@ -281,6 +289,7 @@ http-server -p 5500
   }],
   adminUser: String,           // firstName of creator
   venue: String,
+  price: Number,               // >= 0, default 0
   participants: [{
     name: String,
     email: String,
@@ -302,6 +311,7 @@ http-server -p 5500
 ### 2. Event Management
 - **Admin:** Create, view, and delete events
 - **Participant:** Browse, search, filter, and register for events
+- Event supports both free and paid registration via event price
 - Pagination with "Previous" and "Next" buttons
 - Real-time event statistics (count, clubs, venues)
 
@@ -314,9 +324,20 @@ http-server -p 5500
 - **Event Registration Email:** Sent when user registers for an event
 - **Reminder Email:** Hourly job checks for events starting within 24 hours
 
-### 5. Queue & Background Jobs
+### 5. Payments
+- Paid events use Razorpay order creation from backend
+- Payment is verified using HMAC signature (`razorpay_signature`)
+- User is added to participants only after successful verification
+- Free events continue to use direct registration without payment
+
+### 6. Queue & Background Jobs
 - BullMQ manages `email-queue` and `remainder` queues
 - Workers process jobs asynchronously
+
+### 7. Reporting and Participants
+- Participants page displays payment status per registrant
+- Event report includes event price and participant counts
+- Reports and participant lists are printable via browser print
 ---
 
 ### Known Issue & Notes
@@ -344,6 +365,8 @@ MONGODB_URI=your_production_mongodb_uri
 SECRETE=your_jwt_secret_key
 EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_app_password
+razorpay_key_id=your_razorpay_key_id
+razorpay_key_secret=your_razorpay_key_secret
 PORT=4000
 ```
 
